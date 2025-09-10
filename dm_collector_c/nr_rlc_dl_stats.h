@@ -78,9 +78,6 @@ static int _decode_nr_rlc_dl_status_payload(const char *b,
     int start = offset;
     int pkt_ver = _search_result_int(result, "Version");
 
-    PyObject *old_object;
-    PyObject *pyfloat;
-
    switch(pkt_ver){
    case 4:
    {

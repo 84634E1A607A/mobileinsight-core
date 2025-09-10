@@ -16,6 +16,10 @@ const Fmt GsmDsdsRrSignalingMsg_Fmt [] = {
 
 static int _decode_gsm_dsds_rr_signaling_msg_payload (const char *b,
         int offset, size_t length, PyObject *result) {
+        (void)b; // Suppress unused parameter warning
+    (void)offset; // Suppress unused parameter warning
+    (void)length; // Suppress unused parameter warning
+
     int temp;
     PyObject *old_object;
 

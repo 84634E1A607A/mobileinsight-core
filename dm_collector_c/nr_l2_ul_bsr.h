@@ -47,13 +47,13 @@ const Fmt Skip2_v2 [] = {
     {UINT, "Reserved12", 8},
 };
 const ValueName BSRTriggerReason[] = {
-        {1, "T_PERIODIC_EXPIRY_BSR"},
-        {4, "HIGH_DATA_ARRIVAL"},
-        {5, "T_PERIODIC_EXPIRY_BSR:HIGH_DATA_ARRIVAL"}
+        {1, "T_PERIODIC_EXPIRY_BSR", true},
+        {4, "HIGH_DATA_ARRIVAL", true},
+        {5, "T_PERIODIC_EXPIRY_BSR:HIGH_DATA_ARRIVAL", true}
 };
 const ValueName BSRType[] = {
-        {1, "SHORT_BSR"},
-        {2, "LONG_BSR"}
+        {1, "SHORT_BSR", true},
+        {2, "LONG_BSR", true}
 };
 static int _decode_nr_l2_ul_bsr_payload (const char *b,
         int offset, size_t length, PyObject *result) {

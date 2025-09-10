@@ -159,58 +159,58 @@ const Fmt NrMacUlPhyChannelSchedulePrach_Fmt_v2_11[] = {
 };
 
 const ValueName prach_Numerology_v2_11[] = {
-	{1,"30KHZ"},
+	{1,"30KHZ", true},
 };
 
 const ValueName PCSRSystemTimeNumerology_v2_11[] = {
-	{0,"15KHZ"},
+	{0,"15KHZ", true},
 };
 const ValueName NRMacULPhyCHAScheRntiType_v2_11[] = {
-    {0b0000,"C_RNTI"},
-    {0B0010,"T_C_RNTI"},
+    {0b0000,"C_RNTI", true},
+    {0B0010,"T_C_RNTI", true},
 };
 const ValueName NRMacULPhyCHASchePhychanBitMask_v2_11[] = {
-    {0b000010,"PUSCH"},
-    {0b000100,"PUCCH"},
-    {0b000110,"PUSCH|PUCCH"},
-	{0b010000,"PRACH"},
+    {0b000010,"PUSCH", true},
+    {0b000100,"PUCCH", true},
+    {0b000110,"PUSCH|PUCCH", true},
+	{0b010000,"PRACH", true},
 };
 const ValueName NRMacULPhyCHAScheMCSTable_v2_11[] = {
-    {0b0000,"64QAM"},
+    {0b0000,"64QAM", true},
 };
 const  ValueName NRMacULPhyCHAScheMappingType_v2_11[] = {
-    {1,"Type B"},
+    {1,"Type B", true},
 };
 const ValueName NRMacULPhyCHAScheTxMode_v2_11[] = {
-    {0,"SISO"},
+    {0,"SISO", true},
 };
 const  ValueName NRMacULPhyCHAScheTXType_v2_11[] = {
-    {0,"NEW_TX"},
+    {0,"NEW_TX", true},
 };
 
 const  ValueName NRMacULPhyCHAScheDataScramblingSelection_v2_11[] = {
-    {0b01,"FROM_CELL_ID"},
-    {0,"FROM_CFG"},
+    {0b01,"FROM_CELL_ID", true},
+    {0,"FROM_CFG", true},
 };
 const  ValueName NRMacULPhyCHAScheMOD_TYPE_v2_11[] = {
-    {0b010,"16QAM"},
-    {0b001,"QPSK"},
+    {0b010,"16QAM", true},
+    {0b001,"QPSK", true},
 };
 
 const  ValueName NRMacULPhyCHAScheMDMRSScrambingSelection_v2_11[] = {
-    {0,"NSCID_0"},
-    {0b0010,"CELL_ID"},
+    {0,"NSCID_0", true},
+    {0b0010,"CELL_ID", true},
 };
 
 const  ValueName NRMacULPhyCHASchePUCCHFormat_v2_11[] = {
-    {0b1000,"PUCCH_FORMAT_F0"},
+    {0b1000,"PUCCH_FORMAT_F0", true},
 };
 
 const  ValueName NRMacULPhyCHAScheUCIRequestBMask_v2_11[] = {
-    {0,"ACK_NACK_PRT"},
+    {0,"ACK_NACK_PRT", true},
 };
 const  ValueName NRMacULPhyCHAScheMFreqHoppingFlag_v2_11[] = {
-    {0,"HOP_MODE_NEITHER"},
+    {0,"HOP_MODE_NEITHER", true},
 };
 static int
 _decode_nr_mac_ul_pcsr_system_time_v2_11(const char* b, int offset, size_t length,

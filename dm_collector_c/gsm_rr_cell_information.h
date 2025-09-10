@@ -20,6 +20,10 @@ const Fmt GsmRrCellInfo_Fmt [] = {
 
 static int _decode_gsm_rci_payload (const char *b,
         int offset, size_t length, PyObject *result) {
+        (void)b; // Suppress unused parameter warning
+    (void)offset; // Suppress unused parameter warning
+    (void)length; // Suppress unused parameter warning
+
     int temp = _search_result_int(result, "BCCH ARFCN");
     int iArfcn = temp & 4095;
     PyObject *old_object = _replace_result_int(result, "BCCH ARFCN", iArfcn);

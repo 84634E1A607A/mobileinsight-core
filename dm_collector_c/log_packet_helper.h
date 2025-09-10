@@ -19,8 +19,10 @@
 #define printf(fmt,args...) __android_log_print(ANDROID_LOG_INFO, "python", fmt, ##args);
 #endif
 
-// #define SSTR(x) static_cast< std::ostringstream & >( \
-//         ( std::ostringstream() << std::dec << x ) ).str()
+/* 
+ * #define SSTR(x) static_cast< std::ostringstream & >( 
+ *         ( std::ostringstream() << std::dec << x ) ).str()
+ */
 
 #define SSTR(x) std::to_string(x)
 
@@ -141,6 +143,10 @@ _search_result_uint(PyObject *result, const char *target) {
 }
 
 static const char*
+_search_result_bytestream(PyObject *result, const char *target) 
+__attribute__ ((unused));
+
+static const char*
 _search_result_bytestream(PyObject *result, const char *target) {
     PyObject *item = _search_result(result, target);
     assert(PyLong_Check(item));
@@ -169,6 +175,10 @@ _replace_result(PyObject *result, const char *target, PyObject *new_object) {
         return NULL;
     }
 }
+
+static void
+_delete_result(PyObject *result, const char *target) 
+__attribute__ ((unused));
 
 static void
 _delete_result(PyObject *result, const char *target){
@@ -300,6 +310,7 @@ static int
 _decode_by_fmt(const Fmt fmt[], int n_fmt,
                const char *b, int offset, int length,
                PyObject *result) {
+    (void)length; // Suppress unused parameter warning
     assert(PyList_Check(result));
     int n_consumed = 0;
 
@@ -559,6 +570,9 @@ _decode_by_fmt(const Fmt fmt[], int n_fmt,
 }
 
 //printf PyObject
+static void reprint(PyObject *obj) 
+__attribute__ ((unused));
+
 static void reprint(PyObject *obj) {
     PyObject* repr = PyObject_Repr(obj);
     PyObject* str = PyUnicode_AsEncodedString(repr, "utf-8", "~E~");
@@ -571,6 +585,10 @@ static void reprint(PyObject *obj) {
 }
 
 static void
+_convert_nr_rsrp(PyObject *obj, const char *rsrp_field) 
+__attribute__ ((unused));
+
+static void
 _convert_nr_rsrp(PyObject *obj, const char *rsrp_field){
     int utemp = _search_result_uint(obj, rsrp_field);
     float rsrp = utemp * 0.0078 - 0.0003;           // TODO: Based on polyfit. To be more accurate
@@ -579,6 +597,10 @@ _convert_nr_rsrp(PyObject *obj, const char *rsrp_field){
     Py_DECREF(old_object);
     Py_DECREF(pyfloat);
 }
+
+static void
+_convert_nr_rsrq(PyObject *obj, const char *rsrq_field) 
+__attribute__ ((unused));
 
 static void
 _convert_nr_rsrq(PyObject *obj, const char *rsrq_field){

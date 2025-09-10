@@ -221,7 +221,7 @@ const Fmt LtePhyPdschDecodingResult_Stream_v106 [] = {
     {UINT, "Companding Stats", 4},   // 2 bits
     {PLACEHOLDER, "HARQ Combining", 0}, // 1 bit
     {PLACEHOLDER, "Decob TB CRC", 0},   // 1 bit
-    {PLACEHOLDER, "Effective Code Rate Data"},
+    {PLACEHOLDER, "Effective Code Rate Data", true},
     {PLACEHOLDER, "Num RE", 0},    // 15 bits
     {PLACEHOLDER, "Codeword Index", 0}, //  1 bits
     {UINT, "LLR Scale", 1}, // 4 bits

@@ -113,7 +113,7 @@ encode_log_config (LogConfigOp op, const std::vector<int>& type_ids) {
     case DIAG_END_6000:
         buf.second = sizeof(char) * 2;
         buf.first = new char[buf.second];
-        *((int *)(buf.first)) = 0x0060;
+        *((short *)(buf.first)) = 0x0060;
         break;
 
 

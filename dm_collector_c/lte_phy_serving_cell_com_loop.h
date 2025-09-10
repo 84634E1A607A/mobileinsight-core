@@ -22,8 +22,8 @@ const Fmt LtePhyServingCellComLoop_Payload_v22 [] = {
 };
 
 const ValueName LtePhyServingCellComLoop_CarrierIndex [] = {
-    {0, "PCC"},
-    {1, "SCC"},
+    {0, "PCC", true},
+    {1, "SCC", true},
 };
 
 const Fmt LtePhyServingCellComLoop_Record_v41 [] = {
@@ -41,8 +41,8 @@ const Fmt LtePhyServingCellComLoop_Record_v41 [] = {
     {SKIP, NULL, 16},
 };
 const ValueName LtePhyServingCellComLoop_Record_Enabled [] = {
-    {0, "Disabled"},
-    {1, "Enabled"},
+    {0, "Disabled", true},
+    {1, "Enabled", true},
 };
 
 static int _decode_lte_phy_serving_cell_com_loop_payload (const char *b,

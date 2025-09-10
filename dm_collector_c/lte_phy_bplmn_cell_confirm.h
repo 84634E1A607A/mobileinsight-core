@@ -28,15 +28,15 @@ const Fmt LtePhyBplmnCellConfirm_Rel9Info [] = {
 };
 
 const ValueName LtePhyBplmnCellConfirm_StandardsVersion [] = {
-    {1, "Release 9"},
+    {1, "Release 9", true},
 };
 const ValueName LtePhyBplmnCellConfirm_SRXLevCalculated [] = {
-    {0, "false"},
-    {1, "true"},
+    {0, "false", true},
+    {1, "true", true},
 };
 const ValueName LtePhyBplmnCellConfirm_Rel9InfoSQualCalculated [] = {
-    {0, "No"},
-    {1, "Yes"},
+    {0, "No", true},
+    {1, "Yes", true},
 };
 
 static int _decode_lte_phy_bplmn_cell_confirm_payload (const char *b,

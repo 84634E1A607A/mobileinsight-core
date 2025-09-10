@@ -27,11 +27,11 @@ const Fmt LtePhyBplmnCellRequest_Rel9Info [] = {
 };
 
 const ValueName LtePhyBplmnCellRequest_StandardsVersion [] = {
-    {1, "Release 9"},
+    {1, "Release 9", true},
 };
 const ValueName LtePhyBplmnCellRequest_BarredStatus [] = {
-    {0, "Not Barred"},
-    {1, "Cell Barred"},
+    {0, "Not Barred", true},
+    {1, "Cell Barred", true},
 };
 
 static int _decode_lte_phy_bplmn_cell_request_payload (const char *b,

@@ -23,27 +23,27 @@ const Fmt _1xEVRxPartialMultiRLPPacket_Packet [] = {
 };
 
 const ValueName _1xEVRxPartialMultiRLPPacket_Packet_DataRate [] = {
-    {0, "Rate not determined"},
-    {1, "38.4 Kbps"},
-    {2, "76.8 Kbps"},
-    {3, "153.6 Kbps"},
-    {4, "307.2 short Kbps"},
-    {5, "307.2 long Kbps"},
-    {6, "614.4 short Kbps"},
-    {7, "614.4 long Kbps"},
-    {8, "921.6 Kbps"},
-    {9, "1.2288 short Mbps"},
-    {10, "1.2288 long Mbps"},
-    {11, "1.843 Mbps"},
-    {12, "2.456 Mbps"},
-    {13, "1.536 Mbps"}, // weird
-    {14, "3.072 Mbps"},
-    {15, "Invalid"},
+    {0, "Rate not determined", true},
+    {1, "38.4 Kbps", true},
+    {2, "76.8 Kbps", true},
+    {3, "153.6 Kbps", true},
+    {4, "307.2 short Kbps", true},
+    {5, "307.2 long Kbps", true},
+    {6, "614.4 short Kbps", true},
+    {7, "614.4 long Kbps", true},
+    {8, "921.6 Kbps", true},
+    {9, "1.2288 short Mbps", true},
+    {10, "1.2288 long Mbps", true},
+    {11, "1.843 Mbps", true},
+    {12, "2.456 Mbps", true},
+    {13, "1.536 Mbps", true}, // weird
+    {14, "3.072 Mbps", true},
+    {15, "Invalid", true},
 };
 
 const ValueName _1xEVRxPartialMultiRLPPacket_Packet_Channel [] = {
-    {0, "FTC"},
-    {1, "Control"},
+    {0, "FTC", true},
+    {1, "Control", true},
 };
 
 static int _decode_1xev_rx_partial_multirlp_packet_payload (const char *b,

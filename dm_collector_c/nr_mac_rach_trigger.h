@@ -30,17 +30,17 @@ const Fmt NrMacRachTriggerFmt_ForMsglist_v2_1[] = {
     {UINT,"MSG3",1},
 };
 const ValueName NrMACRachTriggerReason_v2_1[] = {
-        {0x00,"Connection_Request"},
-        {0x01,"RADIO_LINK_FAILURE"},
-        {0x02,"HANDOVER"},
-        {0x03,"UL_DATA_ARRIVAL"},
-        {0x06,"Beam_Failure",}
+        {0x00,"Connection_Request", true},
+        {0x01,"RADIO_LINK_FAILURE", true},
+        {0x02,"HANDOVER", true},
+        {0x03,"UL_DATA_ARRIVAL", true},
+        {0x06,"Beam_Failure", true}
 };
 const ValueName NrMACRachTriggerRachContention_v2_1[] = {
-        {0x00,"CONT_FREE"},
-        {0x01,"DL_MCE"},
-        {0x02,"UL_Grant"},
-        {0x03,"PDCCH_CRNTI"},
+        {0x00,"CONT_FREE", true},
+        {0x01,"DL_MCE", true},
+        {0x02,"UL_Grant", true},
+        {0x03,"PDCCH_CRNTI", true},
 };
 static int
 _decode_nr_mac_rach_trigger(const char* b, int offset, size_t length,

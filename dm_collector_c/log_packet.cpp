@@ -76,8 +76,10 @@
 #include "gnss_glonass_measurement_report.h"
 #include "gnss_gal_measurement_report.h"
 
-// #define SSTR(x) static_cast< std::ostringstream & >( \
-//         ( std::ostringstream() << std::dec << x ) ).str()
+/* 
+ * #define SSTR(x) static_cast< std::ostringstream & >(
+ *         ( std::ostringstream() << std::dec << x ) ).str()
+ */
 
 #define SSTR(x) std::to_string(x)
 
@@ -4223,7 +4225,7 @@ _decode_lte_mac_ul_transportblock_subpkt(const char *b, int offset, size_t lengt
                                             "(MI)Unknown");
 
                                         uint iSDULen = -1;
-                                        if (iLCID >= 0 && iLCID <= 10 && iE != 0) // logical channel
+                                        if (iLCID <= 10 && iE != 0) // logical channel
                                         {
                                             PyObject *mac_hdr_L = PyList_New(0);
                                             if (iF2 == 0)
@@ -4302,8 +4304,8 @@ _decode_lte_mac_ul_transportblock_subpkt(const char *b, int offset, size_t lengt
                                             uint utemp2 = _search_result_uint(mac_hdr_ce, "L-BSR Field 2");
                                             uint utemp3 = _search_result_uint(mac_hdr_ce, "L-BSR Field 3");
                                             uint iIndex0 = (utemp1 >> 2);
-                                            uint iIndex1 = (utemp1 << 4) & 0x30 + (utemp2 >> 4);
-                                            uint iIndex2 = (utemp2 << 2) & 0x3c + (utemp3 >> 6);
+                                            uint iIndex1 = ((utemp1 << 4) & 0x30) + (utemp2 >> 4);
+                                            uint iIndex2 = ((utemp2 << 2) & 0x3c) + (utemp3 >> 6);
                                             uint iIndex3 = utemp3 & 0x3f;
 
                                             old_object = _replace_result_int(mac_hdr_ce, "BSR LCG 0", iIndex0);
@@ -4556,7 +4558,7 @@ _decode_lte_mac_ul_transportblock_subpkt(const char *b, int offset, size_t lengt
                                             "(MI)Unknown");
 
                                         uint iSDULen = -1;
-                                        if (iLCID >= 0 && iLCID <= 10 && iE != 0) // logical channel
+                                        if (iLCID <= 10 && iE != 0) // logical channel
                                         {
                                             PyObject *mac_hdr_L = PyList_New(0);
                                             if (iF2 == 0)
@@ -4635,8 +4637,8 @@ _decode_lte_mac_ul_transportblock_subpkt(const char *b, int offset, size_t lengt
                                             uint utemp2 = _search_result_uint(mac_hdr_ce, "L-BSR Field 2");
                                             uint utemp3 = _search_result_uint(mac_hdr_ce, "L-BSR Field 3");
                                             uint iIndex0 = (utemp1 >> 2);
-                                            uint iIndex1 = (utemp1 << 4) & 0x30 + (utemp2 >> 4);
-                                            uint iIndex2 = (utemp2 << 2) & 0x3c + (utemp3 >> 6);
+                                            uint iIndex1 = ((utemp1 << 4) & 0x30) + (utemp2 >> 4);
+                                            uint iIndex2 = ((utemp2 << 2) & 0x3c) + (utemp3 >> 6);
                                             uint iIndex3 = utemp3 & 0x3f;
 
                                             old_object = _replace_result_int(mac_hdr_ce, "BSR LCG 0", iIndex0);
@@ -4946,7 +4948,7 @@ _decode_lte_mac_dl_transportblock_subpkt(const char *b, int offset, size_t lengt
                                             "(MI)Unknown");
 
                                         uint iSDULen = -1;
-                                        if (iLCID >= 0 && iLCID <= 10 && iE != 0) // logical channel
+                                        if (iLCID <= 10 && iE != 0) // logical channel
                                         {
                                             PyObject *mac_hdr_L = PyList_New(0);
                                             if (iF2 == 0)
@@ -5153,7 +5155,7 @@ _decode_lte_mac_dl_transportblock_subpkt(const char *b, int offset, size_t lengt
                                             "(MI)Unknown");
 
                                         uint iSDULen = -1;
-                                        if (iLCID >= 0 && iLCID <= 10 && iE != 0) // logical channel
+                                        if (iLCID <= 10 && iE != 0) // logical channel
                                         {
                                             PyObject *mac_hdr_L = PyList_New(0);
                                             if (iF2 == 0)
@@ -11389,6 +11391,8 @@ _decode_nr_rrc_ota(const char *b, int offset, size_t length,
                     PyObject *result) {
     int start = offset;
     int pkt_ver = _search_result_int(result, "Pkt Version");
+    
+    (void)length;   // Suppress unused parameter warning
 
     //pkt_ver==8 (Xiaomi)
     if (pkt_ver == 8) {

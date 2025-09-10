@@ -26,8 +26,8 @@ const Fmt FtlSnr_v7 [] = {
     {UINT, "FTL SNR", 0},//calculate
 };
 const ValueName SSBOrTRS[] = {
-        {0, "SSB"},
-        {1, "TRS"},
+        {0, "SSB", true},
+        {1, "TRS", true},
 };
 static int _decode_nr_ll1_fw_serving_ftl_payload (const char *b,
         int offset, size_t length, PyObject *result) {

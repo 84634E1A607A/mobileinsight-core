@@ -24,6 +24,9 @@ const Fmt GsmRrCellResParm_Fmt [] = {
 static int _decode_gsm_rcrp_payload (const char *b,
         int offset, size_t length, PyObject *result) {
 
+    (void)b;        // Suppress unused parameter warning
+    (void)length;   // Suppress unused parameter warning
+
     (void) _map_result_field_to_name(result, "RxLev Access Min",
             ValueNameGSMRxLevMin,
             ARRAY_SIZE(ValueNameGSMRxLevMin, ValueName),

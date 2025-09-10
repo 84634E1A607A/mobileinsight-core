@@ -56,53 +56,53 @@ const Fmt SinglePhr_Fmt_v4[] = {
 };
 
 const ValueName  tb_type_v4[] = {
-	{0b0000,"CONNECTED"},
-	{0b0100,"RNTI"},
-	{0b1000,"IRACH"},
+	{0b0000,"CONNECTED", true},
+	{0b0100,"RNTI", true},
+	{0b1000,"IRACH", true},
 };
 
 const ValueName  rnti_type_v4[] = {
-	{0b000,"C_RNTI"},
+	{0b000,"C_RNTI", true},
 };
 const ValueName logic[] = {
-	{0,"false"},
-	{1,"true"},
+	{0,"false", true},
+	{1,"true", true},
 };
 const ValueName MCE_bitmask_v4[] = {
-	{0,"0"},
-	{1,"PHR"},
-	{2,"BSR"},
-	{3,"PHR|BSR"},
+	{0,"0", true},
+	{1,"PHR", true},
+	{2,"BSR", true},
+	{3,"PHR|BSR", true},
 };
 
 const ValueName phr_reason_v4[] = {
-	{0x00," "},
-	{0x01,"CFG_CHANGE"},
-	{0x02,"PERIODIC_EXPIRY_PHR"},
-    {0x03,"PERIODIC_EXPIRY_PHR|CFG_CHANGE"},
-	{0x04,"DL_PATHLOSS_CHANGE"},
-	{0x05,"CFG_CHANGE|DL_PATHLOSS_CHANGE"},
-	{0x06,"PERIODIC_EXPIRY_PHR|DL_PATHLOSS_CHANGE"},
+	{0x00," ", true},
+	{0x01,"CFG_CHANGE", true},
+	{0x02,"PERIODIC_EXPIRY_PHR", true},
+    {0x03,"PERIODIC_EXPIRY_PHR|CFG_CHANGE", true},
+	{0x04,"DL_PATHLOSS_CHANGE", true},
+	{0x05,"CFG_CHANGE|DL_PATHLOSS_CHANGE", true},
+	{0x06,"PERIODIC_EXPIRY_PHR|DL_PATHLOSS_CHANGE", true},
 };
 const ValueName phr_cancel_reason_v4[] = {
-	{0x00,"MIN"},
+	{0x00,"MIN", true},
 };
 const ValueName bsr_reason_v4[] = {
-	{0b100,"HIGH_DATA_ARRIVAL"},
-	{0b101,"PERIODIC|HIGH_DATA_ARRIVAL"},
-	{0b001,"PERIODIC"},
+	{0b100,"HIGH_DATA_ARRIVAL", true},
+	{0b101,"PERIODIC|HIGH_DATA_ARRIVAL", true},
+	{0b001,"PERIODIC", true},
 };
 
 const ValueName BSR_Type_v4[] = {
-	{0b0101,"CANCELLED_BSR"},
-	{0b0001,"SHORT_BSR"},
-	{0b0010,"LONG_BSR"},
-	{0,"NO_BSR"},
+	{0b0101,"CANCELLED_BSR", true},
+	{0b0001,"SHORT_BSR", true},
+	{0b0010,"LONG_BSR", true},
+	{0,"NO_BSR", true},
 };
 const ValueName MCE_Type_v4[] = {
-	{0x3D,"S-BSR"},
-	{0x39,"S-PHR"},
-    {0x00,"None"},
+	{0x3D,"S-BSR", true},
+	{0x39,"S-PHR", true},
+    {0x00,"None", true},
 };
 static int
 _decode_McePayload_v4(const char* b, int offset, size_t length,

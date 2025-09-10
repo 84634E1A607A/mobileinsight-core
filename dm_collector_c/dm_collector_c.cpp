@@ -677,7 +677,7 @@ dm_collector_c_reset(PyObject *self, PyObject *args) {
 static PyObject *
 dm_collector_c_receive_log_packet(PyObject *self, PyObject *args) {
 
-    // (void)self;
+    (void)self;  // Mark unused parameter to suppress warning
 
     std::string frame;
     bool crc_correct = false;
@@ -814,9 +814,15 @@ PyInit_dm_collector_c(void) {
     //    PyObject *dm_collector_c = Py_InitModule3("dm_collector_c", DmCollectorCMethods,
     //        "collects and decodes diagnositic logs from Qualcomm chipsets.");
     static struct PyModuleDef moduledef = {
-            PyModuleDef_HEAD_INIT, "dm_collector_c",
-            "collects and decodes diagnositic logs from Qualcomm chipsets.", -1,
+            PyModuleDef_HEAD_INIT, 
+            "dm_collector_c",
+            "collects and decodes diagnositic logs from Qualcomm chipsets.", 
+            -1,
             DmCollectorCMethods,
+            NULL,  // m_slots
+            NULL,  // m_traverse  
+            NULL,  // m_clear
+            NULL   // m_free
     };
     PyObject *dm_collector_c = PyModule_Create(&moduledef);
 

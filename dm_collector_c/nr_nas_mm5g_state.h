@@ -32,25 +32,25 @@ const Fmt NrNasMm5gStateOther_Fmt_v1[] = {
 
 
 const ValueName NrMM5GState_v1[] = {
-    {1,"DEREGISTERED"},
-    {2,"REGISTERED_INITIATED"},
-    {3,"REGISTERED"},
-    {4,"SERVICE_REQUEST_INITIATED"},
+    {1,"DEREGISTERED", true},
+    {2,"REGISTERED_INITIATED", true},
+    {3,"REGISTERED", true},
+    {4,"SERVICE_REQUEST_INITIATED", true},
 };
 
 const ValueName NrMm5gDeregisteredSubstate_v1[] = {
-    {0,"NORMAL_SERVICE"},
-    {1,"PLMN_SEARCH"},
-    {2,"NO_CELL_AVAILABLE"},
-    {5,"LIMITED_SERVICE"},
+    {0,"NORMAL_SERVICE", true},
+    {1,"PLMN_SEARCH", true},
+    {2,"NO_CELL_AVAILABLE", true},
+    {5,"LIMITED_SERVICE", true},
 };
 
 const ValueName NrMM5GUpdateStatus_v1[] = {
-    {0,"UPDATED"},
-    {1,"NOT_UPDATED"},
+    {0,"UPDATED", true},
+    {1,"NOT_UPDATED", true},
 };
 const ValueName UEId_v1[] = {
-    {2,"5G_GUTI"},
+    {2,"5G_GUTI", true},
 };
 
 static int 
@@ -61,7 +61,7 @@ _decode_nr_nas_mm5g_state(const char* b,
     int pkt_ver = _search_result_int(result, "Version");
     bool success=0;
     PyObject* old_object;
-    PyObject* pyfloat;
+    PyObject* pyfloat __attribute__ ((unused));
     switch (pkt_ver) {
     case 1:
     {

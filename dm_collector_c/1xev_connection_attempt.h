@@ -22,16 +22,19 @@ const Fmt _1xEVConnectionAttempt_Fmt [] = {
     {UINT, "Active Set Pilot Changed Count", 1},
 };
 const ValueName _1xEVConnectionAttempt_Outcome [] = {
-    {15, "Success"},
-    {12, "Reserved"},
+    {15, "Success", true},
+    {12, "Reserved", true},
 };
 const ValueName _1xEVConnectionAttempt_Stat [] = {
-    {0, "Not received either TCA or RTCACK message"},
-    {2, "Received both TCA and RTCACK message"},
+    {0, "Not received either TCA or RTCACK message", true},
+    {2, "Received both TCA and RTCACK message", true},
 };
 
 static int _decode_1xev_connection_attempt_payload (const char *b,
         int offset, size_t length, PyObject *result) {
+    (void)b; // Suppress unused parameter warning
+    (void)offset; // Suppress unused parameter warning
+    (void)length; // Suppress unused parameter warning
 
     int iNonDecodeP = _search_result_int(result, "Conn Attempt Outcome");
     int iOutcome = iNonDecodeP & 15; // last 4 bits

@@ -171,62 +171,62 @@ const Fmt LtePdschStatIndication_Record_TB_v5 [] = {
 };
 
 const ValueName LtePdschStatIndication_Record_TB_Modulation [] = {
-    {0, "QPSK"},
-    {1, "16QAM"},
-    {2, "64QAM"},
-    {8, "256QAM"},
+    {0, "QPSK", true},
+    {1, "16QAM", true},
+    {2, "64QAM", true},
+    {8, "256QAM", true},
 };
 
 const ValueName LtePdschStatIndication_Record_TB_Modulation_v24 [] = {
-    {2, "QPSK"},
-    {4, "16QAM"},
-    {6, "64QAM"},
-    {8, "256QAM"},
+    {2, "QPSK", true},
+    {4, "16QAM", true},
+    {6, "64QAM", true},
+    {8, "256QAM", true},
 };
 
 const ValueName LtePdschStatIndication_Record_TB_Modulation_v32 [] = {
-    {2, "QPSK"},
-    {4, "16QAM"},
-    {6, "64QAM"},
-    {8, "256QAM"},
+    {2, "QPSK", true},
+    {4, "16QAM", true},
+    {6, "64QAM", true},
+    {8, "256QAM", true},
 };
 
 const ValueName LtePdschStatIndication_Record_TB_Modulation_v36 [] = {
-    {2, "QPSK"},
-    {4, "16QAM"},
-    {6, "64QAM"},
-    {8, "256QAM"},
+    {2, "QPSK", true},
+    {4, "16QAM", true},
+    {6, "64QAM", true},
+    {8, "256QAM", true},
 };
 
 const ValueName LtePdschStatIndication_Record_TB_Modulation_v34 [] = {
-    {2, "QPSK"},
-    {4, "16QAM"},
-    {6, "64QAM"},
-    {8, "256QAM"},
+    {2, "QPSK", true},
+    {4, "16QAM", true},
+    {6, "64QAM", true},
+    {8, "256QAM", true},
 };
 
 const ValueName LtePdschStatIndication_Record_TB_CrcResult [] = {
-    {0, "Fail"},
-    {1, "Pass"},
+    {0, "Fail", true},
+    {1, "Pass", true},
 };
 const ValueName LtePdschStatIndication_Record_TB_DiscardedReTxPresent [] = {
-    {0, "None"},
-    {1, "Present"},
+    {0, "None", true},
+    {1, "Present", true},
 };
 
 const ValueName LtePdschStatIndication_Record_TB_DidRecombining [] = {
-    {0, "No"},
-    {1, "Yes"},
+    {0, "No", true},
+    {1, "Yes", true},
 };
 
 const ValueName LtePdschStatIndication_Record_TB_Discarded_ReTx [] = {
-    {0, "NO_DISCARD"},
-    {1, "DISCARD_AND_ACK"},
+    {0, "NO_DISCARD", true},
+    {1, "DISCARD_AND_ACK", true},
 };
 
 const ValueName LtePdschStatIndication_Record_TB_AckNackDecision [] = {
-    {0, "NACK"},
-    {1, "ACK"},
+    {0, "NACK", true},
+    {1, "ACK", true},
 };
 
 const Fmt LtePdschStatIndication_Record_v36_P2 [] = {
@@ -378,7 +378,7 @@ const Fmt LtePdschStatIndication_Record_TB_v34 [] = {
 };
 
 const ValueName LtePdschStatIndication_Record_TB_v34_QED_Iteration [] = {
-    {0, "OFF"},
+    {0, "OFF", true},
 };
 
 const Fmt LtePdschStatIndication_Record_v34_P2 [] = {

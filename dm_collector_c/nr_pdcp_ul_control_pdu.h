@@ -38,18 +38,18 @@ const Fmt others_v1 [] = {
 
 
 const ValueName RBMode[] = {
-        {1, "AM"},
+        {1, "AM", true},
 
 };
 const ValueName RBType[] = {
-        {1, "SRB"},
-        {2, "DRB"},
+        {1, "SRB", true},
+        {2, "DRB", true},
 };
 const ValueName PDCPSNLength[] = {
-        {2, "18"},
+        {2, "18", true},
 };
 const ValueName PDCPType1[] = {
-        {0, "STATUS_REPORT"},
+        {0, "STATUS_REPORT", true},
 
 };
 

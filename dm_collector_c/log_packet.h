@@ -79,15 +79,15 @@ const Fmt WcdmaSignalingMessagesFmtExtraSIBType[] = {
 };
 
 const ValueName ValueNameWcdmaExtraSIBType[] = {
-        {0,  "RRC_MIB"},
-        {1,  "RRC_SIB1"},
-        {2,  "RRC_SIB2"},
-        {3,  "RRC_SIB3"},
-        {5,  "RRC_SIB5"},
-        {7,  "RRC_SIB7"},
-        {11, "RRC_SIB11"},
-        {12, "RRC_SIB12"},
-        {19, "RRC_SIB19"},
+        {0,  "RRC_MIB", true},
+        {1,  "RRC_SIB1", true},
+        {2,  "RRC_SIB2", true},
+        {3,  "RRC_SIB3", true},
+        {5,  "RRC_SIB5", true},
+        {7,  "RRC_SIB7", true},
+        {11, "RRC_SIB11", true},
+        {12, "RRC_SIB12", true},
+        {19, "RRC_SIB19", true},
 };
 
 const Fmt WcdmaSignalingMessagesFmtExtensionSIBType[] = {
@@ -95,19 +95,19 @@ const Fmt WcdmaSignalingMessagesFmtExtensionSIBType[] = {
 };
 
 const ValueName ValueNameWcdmaExtensionSIBType[] = {
-        {0x43, "RRC_SIB19"},    // Need more items here
+        {0x43, "RRC_SIB19", true},    // Need more items here
 };
 
 const ValueName WcdmaSignalingMsgChannelType[] = {
-        {0x00, "RRC_UL_CCCH"},
-        {0x01, "RRC_UL_DCCH"},
-        {0x02, "RRC_DL_CCCH"},
-        {0x03, "RRC_DL_DCCH"},
-        {0x04, "RRC_DL_BCCH_BCH"},
-        {0x06, "RRC_DL_PCCH"},
-        {0x09, "Extension SIB"},
-        {0x84, "RRC_DL_BCCH_BCH"},    // Qualcom makes duplicate constant?
-        {0xfe, "RRC_COMPLETE_SIB"},
+        {0x00, "RRC_UL_CCCH", true},
+        {0x01, "RRC_UL_DCCH", true},
+        {0x02, "RRC_DL_CCCH", true},
+        {0x03, "RRC_DL_DCCH", true},
+        {0x04, "RRC_DL_BCCH_BCH", true},
+        {0x06, "RRC_DL_PCCH", true},
+        {0x09, "Extension SIB", true},
+        {0x84, "RRC_DL_BCCH_BCH", true},    // Qualcom makes duplicate constant?
+        {0xfe, "RRC_COMPLETE_SIB", true},
 };
 
 // ------------------------------------------------------------
@@ -119,36 +119,36 @@ const Fmt UmtsNasGmmStateFmt[] = {
 };
 
 const ValueName UmtsNasGmmState_GmmState[] = {
-        {0, "GMM_NULL"},
-        {1, "GMM_DEREGISTERED"},
-        {2, "GMM_REGISTERED_INITIATED"},
-        {3, "GMM_REGISTERED"},
-        {4, "GMM_DEREGISTERED_INITIATED"},
-        {5, "GMM_ROUTING_AREA_UPDATING_INITIATED"},
-        {6, "GMM_SERVICE_REQUEST_INITIATED"}
+        {0, "GMM_NULL", true},
+        {1, "GMM_DEREGISTERED", true},
+        {2, "GMM_REGISTERED_INITIATED", true},
+        {3, "GMM_REGISTERED", true},
+        {4, "GMM_DEREGISTERED_INITIATED", true},
+        {5, "GMM_ROUTING_AREA_UPDATING_INITIATED", true},
+        {6, "GMM_SERVICE_REQUEST_INITIATED", true}
 };
 
 const ValueName UmtsNasGmmState_GmmSubstate[] = {
-        {0,  "GMM_NORMAL_SERVICE"},
-        {1,  "GMM_LIMITED_SERVICE"},
-        {2,  "GMM_ATTACH_NEEDED"},
-        {3,  "GMM_ATTEMPTING_TO_ATTACH"},
-        {4,  "GMM_NO_IMSI"},
-        {5,  "GMM_NO_CELL_AVAILABLE"},
-        {6,  "GMM_PLMN_SEARCH"},
-        {7,  "GMM_SUSPENDED"},
-        {8,  "GMM_UPDATE_NEEDED"},
-        {9,  "GMM_ATTEMPTING_TO_UPDATE"},
-        {10, "GMM_ATTEMPTING_TO_UPDATE_MM"},
-        {11, "GMM_IMSI_DETACH_INITIATED"},
-        {12, "GMM Substate = 12"},
+        {0,  "GMM_NORMAL_SERVICE", true},
+        {1,  "GMM_LIMITED_SERVICE", true},
+        {2,  "GMM_ATTACH_NEEDED", true},
+        {3,  "GMM_ATTEMPTING_TO_ATTACH", true},
+        {4,  "GMM_NO_IMSI", true},
+        {5,  "GMM_NO_CELL_AVAILABLE", true},
+        {6,  "GMM_PLMN_SEARCH", true},
+        {7,  "GMM_SUSPENDED", true},
+        {8,  "GMM_UPDATE_NEEDED", true},
+        {9,  "GMM_ATTEMPTING_TO_UPDATE", true},
+        {10, "GMM_ATTEMPTING_TO_UPDATE_MM", true},
+        {11, "GMM_IMSI_DETACH_INITIATED", true},
+        {12, "GMM Substate = 12", true},
 };
 
 const ValueName UmtsNasGmmState_GmmUpdateStatus[] = {
-        {0, "GMM_GU1_UPDATED"},
-        {1, "GMM_GU2_NOT_UPDATED"},
-        {2, "GMM_GU3_PLMN_NOT_ALLOWED"},
-        {3, "GMM_GU3_ROUTING_AREA_NOT_ALLOWED"}
+        {0, "GMM_GU1_UPDATED", true},
+        {1, "GMM_GU2_NOT_UPDATED", true},
+        {2, "GMM_GU3_PLMN_NOT_ALLOWED", true},
+        {3, "GMM_GU3_ROUTING_AREA_NOT_ALLOWED", true}
 };
 
 // ------------------------------------------------------------
@@ -172,40 +172,40 @@ const Fmt UmtsNasMmStateFmt[] = {
 };
 
 const ValueName UmtsNasMmState_MmState[] = {
-        {0,  "MM_NULL"},
-        {3,  "MM_LOCATION_UPDATE_INITIATED"},
-        {5,  "MM_WAIT_FOR_OUTGOING_MM_CONNECTION"},
-        {6,  "MM_CONNECTION_ACTIVE"},
-        {7,  "MM_IMSI_DETACH_INITIATED"},
-        {9,  "MM_WAIT_FOR_NETWORK_COMMAND"},
-        {10, "MM_LOCATION_UPDATE_REJECTED"},
-        {13, "MM_WAIT_FOR_RR_CONNECTION_UL"},
-        {14, "MM_WAIT_FOR_RR_CONNECTION_MM"},
-        {15, "MM_WAIT_FOR_RR_CONNECTION_IMSI_DETACH"},
-        {17, "MM_REESTABLISHMENT_INITIATED"},
-        {18, "MM_WAIT_FOR_RR_ACTIVE"},
-        {19, "MM_IDLE"},
-        {20, "MM_WAIT_FOR_ADDITIONAL_OUTGOING_MM_CONNECTION"},
-        {21, "MM_WAIT_FOR_RR_CONNECTION_REESTABLISHMENT"},
-        {22, "MM_WAIT_FOR_REESTABLISH_DECISION"}
+        {0,  "MM_NULL", true},
+        {3,  "MM_LOCATION_UPDATE_INITIATED", true},
+        {5,  "MM_WAIT_FOR_OUTGOING_MM_CONNECTION", true},
+        {6,  "MM_CONNECTION_ACTIVE", true},
+        {7,  "MM_IMSI_DETACH_INITIATED", true},
+        {9,  "MM_WAIT_FOR_NETWORK_COMMAND", true},
+        {10, "MM_LOCATION_UPDATE_REJECTED", true},
+        {13, "MM_WAIT_FOR_RR_CONNECTION_UL", true},
+        {14, "MM_WAIT_FOR_RR_CONNECTION_MM", true},
+        {15, "MM_WAIT_FOR_RR_CONNECTION_IMSI_DETACH", true},
+        {17, "MM_REESTABLISHMENT_INITIATED", true},
+        {18, "MM_WAIT_FOR_RR_ACTIVE", true},
+        {19, "MM_IDLE", true},
+        {20, "MM_WAIT_FOR_ADDITIONAL_OUTGOING_MM_CONNECTION", true},
+        {21, "MM_WAIT_FOR_RR_CONNECTION_REESTABLISHMENT", true},
+        {22, "MM_WAIT_FOR_REESTABLISH_DECISION", true}
 };
 
 const ValueName UmtsNasMmState_MmSubstate[] = {
-        {0, "MM_NULL_SUBSTATE"},
-        {1, "MM_NO_IMSI"},
-        {2, "MM_PLMN_SEARCH"},
-        {3, "MM_LIMITED_SERVICE"},
-        {4, "MM_ATTEMPTING_TO_UPDATE"},
-        {5, "MM_LOCATION_UPDATE_NEEDED"},
-        {6, "MM_NO_CELL_AVAILABLE"},
-        {7, "MM_PLMN_SEARCH_NORMAL_SERVICE"},
-        {8, "MM_NORMAL_SERVICE"}
+        {0, "MM_NULL_SUBSTATE", true},
+        {1, "MM_NO_IMSI", true},
+        {2, "MM_PLMN_SEARCH", true},
+        {3, "MM_LIMITED_SERVICE", true},
+        {4, "MM_ATTEMPTING_TO_UPDATE", true},
+        {5, "MM_LOCATION_UPDATE_NEEDED", true},
+        {6, "MM_NO_CELL_AVAILABLE", true},
+        {7, "MM_PLMN_SEARCH_NORMAL_SERVICE", true},
+        {8, "MM_NORMAL_SERVICE", true}
 };
 
 const ValueName UmtsNasMmState_MmUpdateStatus[] = {
-        {0, "UPDATED"},
-        {1, "NOT_UPDATED"},
-        {2, "ROAMING_NOT_ALLOWED"}
+        {0, "UPDATED", true},
+        {1, "NOT_UPDATED", true},
+        {2, "ROAMING_NOT_ALLOWED", true}
 };
 
 // ------------------------------------------------------------
@@ -217,8 +217,8 @@ const Fmt UmtsNasOtaFmt[] = {
 };
 
 const ValueName UmtsNasOtaFmt_MessageDirection[] = {
-        {0, "TO_UE"},
-        {1, "FROM_UE"}
+        {0, "TO_UE", true},
+        {1, "FROM_UE", true}
 };
 
 // ------------------------------------------------------------
@@ -374,36 +374,36 @@ const Fmt LteRrcOtaPacketFmt_v26[] = {
 };
 
 const ValueName LteRrcOtaPduType[] = {
-        {0x02, "LTE-RRC_BCCH_DL_SCH"},
-        {0x04, "LTE-RRC_PCCH"},
-        {0x05, "LTE-RRC_DL_CCCH"},
-        {0x06, "LTE-RRC_DL_DCCH"},
-        {0x07, "LTE-RRC_UL_CCCH"},
-        {0x08, "LTE-RRC_UL_DCCH"},
+        {0x02, "LTE-RRC_BCCH_DL_SCH", true},
+        {0x04, "LTE-RRC_PCCH", true},
+        {0x05, "LTE-RRC_DL_CCCH", true},
+        {0x06, "LTE-RRC_DL_DCCH", true},
+        {0x07, "LTE-RRC_UL_CCCH", true},
+        {0x08, "LTE-RRC_UL_DCCH", true},
 };
 
 const ValueName LteRrcOtaPduType_v15[] = {
-        {0x02, "LTE-RRC_BCCH_DL_SCH"},
-        {0x05, "LTE-RRC_PCCH"},
-        {0x06, "LTE-RRC_DL_CCCH"},
-        {0x07, "LTE-RRC_DL_DCCH"},
-        {0x08, "LTE-RRC_UL_CCCH"},
-        {0x09, "LTE-RRC_UL_DCCH"},
+        {0x02, "LTE-RRC_BCCH_DL_SCH", true},
+        {0x05, "LTE-RRC_PCCH", true},
+        {0x06, "LTE-RRC_DL_CCCH", true},
+        {0x07, "LTE-RRC_DL_DCCH", true},
+        {0x08, "LTE-RRC_UL_CCCH", true},
+        {0x09, "LTE-RRC_UL_DCCH", true},
 };
 
 //added fields for version 19
 const ValueName LteRrcOtaPduType_v19[] = {
-        {0x03, "LTE-RRC_BCCH_DL_SCH"},
-        {0x07, "LTE-RRC_PCCH"},
-        {0x08, "LTE-RRC_DL_CCCH"},
-        {0x09, "LTE-RRC_DL_DCCH"},
-        {0x0a, "LTE-RRC_UL_CCCH"},
-        {0x0b, "LTE-RRC_UL_DCCH"},
-        {0x2e, "LTE-RRC_BCCH_DL_SCH_NB"},
-        {0x30, "LTE-RRC_DL_CCCH_NB"},
-        {0x31, "LTE-RRC_DL_DCCH_NB"},
-        {0x34, "LTE-RRC_UL_DCCH_NB"},
-        {0x32, "LTE-RRC_UL_CCCH_NB"},
+        {0x03, "LTE-RRC_BCCH_DL_SCH", true},
+        {0x07, "LTE-RRC_PCCH", true},
+        {0x08, "LTE-RRC_DL_CCCH", true},
+        {0x09, "LTE-RRC_DL_DCCH", true},
+        {0x0a, "LTE-RRC_UL_CCCH", true},
+        {0x0b, "LTE-RRC_UL_DCCH", true},
+        {0x2e, "LTE-RRC_BCCH_DL_SCH_NB", true},
+        {0x30, "LTE-RRC_DL_CCCH_NB", true},
+        {0x31, "LTE-RRC_DL_DCCH_NB", true},
+        {0x34, "LTE-RRC_UL_DCCH_NB", true},
+        {0x32, "LTE-RRC_UL_CCCH_NB", true},
 };
 
 
@@ -426,64 +426,64 @@ const Fmt NrRrcOtaPacketFmt[] = {
 
 const ValueName NrRrcOtaPduType_v7[] = {
 
-        // {0x00, "nr-rrc.ue_radio_paging_info"}, // unknown so far
-        // {0x00, "nr-rrc.ue_radio_access_cap_info"}, // unknown so far
-        // {0x00, "nr-rrc.bcch.dl.sch"},
-        // {0x00, "nr-rrc.dl.ccch"},
-        // {0x00, "nr-rrc.dl.dcch"},
-        // {0x00, "nr-rrc.pcch"},
-        // {0x00, "nr-rrc.ul.ccch"},
-        // {0x00, "nr-rrc.ul.ccch1"},
-        {0x01, "nr-rrc.bcch.bch"},  // MIB
-        {0x0a, "nr-rrc.ul.dcch"},   // RRC Reconfiguration Complete
-        {0x08, "nr-rrc.ul.dcch"},   // Derived from measurement report (uplink, dedicated link)
-        {0x09, "nr-rrc.rrc_reconf"}, // Reconfiguration message
-        {0x18, "nr-rrc.radio_bearer_conf"}, // Radio Bearer Config
-        // {0x00, "nr-rrc.ue_mrdc_cap"}, // unknown so far
-        // {0x00, "nr-rrc.ue_nr_cap"}, // unknown so far
+        // {0x00, "nr-rrc.ue_radio_paging_info", true}, // unknown so far
+        // {0x00, "nr-rrc.ue_radio_access_cap_info", true}, // unknown so far
+        // {0x00, "nr-rrc.bcch.dl.sch", true},
+        // {0x00, "nr-rrc.dl.ccch", true},
+        // {0x00, "nr-rrc.dl.dcch", true},
+        // {0x00, "nr-rrc.pcch", true},
+        // {0x00, "nr-rrc.ul.ccch", true},
+        // {0x00, "nr-rrc.ul.ccch1", true},
+        {0x01, "nr-rrc.bcch.bch", true},  // MIB
+        {0x0a, "nr-rrc.ul.dcch", true},   // RRC Reconfiguration Complete
+        {0x08, "nr-rrc.ul.dcch", true},   // Derived from measurement report (uplink, dedicated link)
+        {0x09, "nr-rrc.rrc_reconf", true}, // Reconfiguration message
+        {0x18, "nr-rrc.radio_bearer_conf", true}, // Radio Bearer Config
+        // {0x00, "nr-rrc.ue_mrdc_cap", true}, // unknown so far
+        // {0x00, "nr-rrc.ue_nr_cap", true}, // unknown so far
 };
 
 const ValueName NrRrcOtaPduType_v8[] = {
 
-        // {0x00, "nr-rrc.ue_radio_paging_info"}, // unknown so far
-        // {0x00, "nr-rrc.ue_radio_access_cap_info"}, // unknown so far
-        // {0x00, "nr-rrc.bcch.dl.sch"},
-        // {0x00, "nr-rrc.dl.ccch"},
-        // {0x00, "nr-rrc.dl.dcch"},
-        // {0x00, "nr-rrc.pcch"},
-        // {0x00, "nr-rrc.ul.ccch"},
-        // {0x00, "nr-rrc.ul.ccch1"},
-        {0x01, "nr-rrc.bcch.bch"},  // MIB
-        {0x0a, "nr-rrc.ul.dcch"},   // RRC Reconfiguration Complete
-        {0x08, "nr-rrc.ul.dcch"},   // Derived from measurement report (uplink, dedicated link)
-        {0x09, "nr-rrc.rrc_reconf"}, // Reconfiguration message
-        {0x1a, "nr-rrc.radio_bearer_conf"}, // Radio Bearer Config
-        // {0x00, "nr-rrc.ue_mrdc_cap"}, // unknown so far
-        // {0x00, "nr-rrc.ue_nr_cap"}, // unknown so far
+        // {0x00, "nr-rrc.ue_radio_paging_info", true}, // unknown so far
+        // {0x00, "nr-rrc.ue_radio_access_cap_info", true}, // unknown so far
+        // {0x00, "nr-rrc.bcch.dl.sch", true},
+        // {0x00, "nr-rrc.dl.ccch", true},
+        // {0x00, "nr-rrc.dl.dcch", true},
+        // {0x00, "nr-rrc.pcch", true},
+        // {0x00, "nr-rrc.ul.ccch", true},
+        // {0x00, "nr-rrc.ul.ccch1", true},
+        {0x01, "nr-rrc.bcch.bch", true},  // MIB
+        {0x0a, "nr-rrc.ul.dcch", true},   // RRC Reconfiguration Complete
+        {0x08, "nr-rrc.ul.dcch", true},   // Derived from measurement report (uplink, dedicated link)
+        {0x09, "nr-rrc.rrc_reconf", true}, // Reconfiguration message
+        {0x1a, "nr-rrc.radio_bearer_conf", true}, // Radio Bearer Config
+        // {0x00, "nr-rrc.ue_mrdc_cap", true}, // unknown so far
+        // {0x00, "nr-rrc.ue_nr_cap", true}, // unknown so far
 };
 const ValueName NrRrcOtaPduType_v9[] = {
 
-        // {0x00, "nr-rrc.ue_radio_paging_info"}, // unknown so far
-        // {0x00, "nr-rrc.ue_radio_access_cap_info"}, // unknown so far
-        // {0x00, "nr-rrc.bcch.dl.sch"},
-        // {0x00, "nr-rrc.dl.ccch"},
-        // {0x00, "nr-rrc.dl.dcch"},
-        // {0x00, "nr-rrc.pcch"},
-        // {0x00, "nr-rrc.ul.ccch"},
-        // {0x00, "nr-rrc.ul.ccch1"},
-        {0x01, "nr-rrc.bcch.bch"},  // MIB
-	    {0x02,"nr-rrc.bcch.dl.sch"},
-	    {0x03,"nr-rrc.dl.ccch"},
-	    {0x04,"nr-rrc.dl.dcch"},
-	    {0x05,"nr-rrc.pcch"},
-	    {0x06,"nr-rrc.ul.ccch"},
-        {0x0a, "nr-rrc.ul.dcch"},   // RRC Reconfiguration Complete
-        {0x08, "nr-rrc.ul.dcch"},   // Derived from measurement report (uplink, dedicated link)
+        // {0x00, "nr-rrc.ue_radio_paging_info", true}, // unknown so far
+        // {0x00, "nr-rrc.ue_radio_access_cap_info", true}, // unknown so far
+        // {0x00, "nr-rrc.bcch.dl.sch", true},
+        // {0x00, "nr-rrc.dl.ccch", true},
+        // {0x00, "nr-rrc.dl.dcch", true},
+        // {0x00, "nr-rrc.pcch", true},
+        // {0x00, "nr-rrc.ul.ccch", true},
+        // {0x00, "nr-rrc.ul.ccch1", true},
+        {0x01, "nr-rrc.bcch.bch", true},  // MIB
+	    {0x02,"nr-rrc.bcch.dl.sch", true},
+	    {0x03,"nr-rrc.dl.ccch", true},
+	    {0x04,"nr-rrc.dl.dcch", true},
+	    {0x05,"nr-rrc.pcch", true},
+	    {0x06,"nr-rrc.ul.ccch", true},
+        {0x0a, "nr-rrc.ul.dcch", true},   // RRC Reconfiguration Complete
+        {0x08, "nr-rrc.ul.dcch", true},   // Derived from measurement report (uplink, dedicated link)
 	
-       	{0x09, "nr-rrc.rrc_reconf"}, // Reconfiguration message
-        {0x19, "nr-rrc.radio_bearer_conf"}, // Radio Bearer Config
-        // {0x00, "nr-rrc.ue_mrdc_cap"}, // unknown so far
-        // {0x00, "nr-rrc.ue_nr_cap"}, // unknown so far
+       	{0x09, "nr-rrc.rrc_reconf", true}, // Reconfiguration message
+        {0x19, "nr-rrc.radio_bearer_conf", true}, // Radio Bearer Config
+        // {0x00, "nr-rrc.ue_mrdc_cap", true}, // unknown so far
+        // {0x00, "nr-rrc.ue_nr_cap", true}, // unknown so far
 };
 // ------------------------------------------------------------
 // LTE NAS Plain
@@ -538,38 +538,38 @@ const Fmt LteNasEsmStateFmt_v1[] = {
 };
 
 const ValueName LteNasEmmState_v2_EmmState[] = {
-        {0, "EMM_NULL"},    // No substate
-        {1, "EMM_DEREGISTERED"},    // Substate table: Deregistered
-        {2, "EMM_REGISTERED_INITIATED"},    // Substate table: Registered_Initiated
-        {3, "EMM_REGISTERED"},    // Substate table: Registered
-        {4, "EMM_TRACKING_AREA_UPDATING_INITIATED"},    // The same as above
-        {5, "EMM_SERVICE_REQUEST_INITIATED"},    // The same as above
-        {6, "EMM_DEREGISTERED_INITIATED"}    // No substate
+        {0, "EMM_NULL", true},    // No substate
+        {1, "EMM_DEREGISTERED", true},    // Substate table: Deregistered
+        {2, "EMM_REGISTERED_INITIATED", true},    // Substate table: Registered_Initiated
+        {3, "EMM_REGISTERED", true},    // Substate table: Registered
+        {4, "EMM_TRACKING_AREA_UPDATING_INITIATED", true},    // The same as above
+        {5, "EMM_SERVICE_REQUEST_INITIATED", true},    // The same as above
+        {6, "EMM_DEREGISTERED_INITIATED", true}    // No substate
 };
 
 const ValueName LteNasEmmState_v2_EmmSubstate_Deregistered[] = {
-        {0, "EMM_DEREGISTERED_NO_IMSI"},
-        {1, "EMM_DEREGISTERED_PLMN_SEARCH"},
-        {2, "EMM_DEREGISTERED_ATTACH_NEEDED"},
-        {3, "EMM_DEREGISTERED_NO_CELL_AVAILABLE"},
-        {4, "EMM_DEREGISTERED_ATTEMPTING_TO_ATTACH"},
-        {5, "EMM_DEREGISTERED_NORMAL_SERVICE"},
-        {6, "EMM_DEREGISTERED_LIMITED_SERVICE"},
-        {7, "EMM sub-state = 7"},
+        {0, "EMM_DEREGISTERED_NO_IMSI", true},
+        {1, "EMM_DEREGISTERED_PLMN_SEARCH", true},
+        {2, "EMM_DEREGISTERED_ATTACH_NEEDED", true},
+        {3, "EMM_DEREGISTERED_NO_CELL_AVAILABLE", true},
+        {4, "EMM_DEREGISTERED_ATTEMPTING_TO_ATTACH", true},
+        {5, "EMM_DEREGISTERED_NORMAL_SERVICE", true},
+        {6, "EMM_DEREGISTERED_LIMITED_SERVICE", true},
+        {7, "EMM sub-state = 7", true},
 };
 
 const ValueName LteNasEmmState_v2_EmmSubstate_Registered_Initiated[] = {
-        {0, "EMM_WAITING_FOR_NW_RESPONSE"},
-        {1, "EMM_WAITING_FOR_ESM_RESPONSE"}
+        {0, "EMM_WAITING_FOR_NW_RESPONSE", true},
+        {1, "EMM_WAITING_FOR_ESM_RESPONSE", true}
 };
 
 const ValueName LteNasEmmState_v2_EmmSubstate_Registered[] = {
-        {0, "EMM_REGISTERED_NORMAL_SERVICE"},
-        {1, "EMM_REGISTERED_UPDATE_NEEDED"},
-        {2, "EMM_REGISTERED_ATTEMPTING_TO_UPDATE"},
-        {3, "EMM_REGISTERED_NO_CELL_AVAILABLE"},
-        {4, "EMM_REGISTERED_PLMN_SEARCH"},
-        {5, "EMM_REGISTERED_LIMITED_SERVICE"}
+        {0, "EMM_REGISTERED_NORMAL_SERVICE", true},
+        {1, "EMM_REGISTERED_UPDATE_NEEDED", true},
+        {2, "EMM_REGISTERED_ATTEMPTING_TO_UPDATE", true},
+        {3, "EMM_REGISTERED_NO_CELL_AVAILABLE", true},
+        {4, "EMM_REGISTERED_PLMN_SEARCH", true},
+        {5, "EMM_REGISTERED_LIMITED_SERVICE", true}
 };
 
 // ------------------------------------------------------------
@@ -641,8 +641,8 @@ const Fmt LtePhyPdschDemapperConfigFmt_v28[] = {
         //newly added fields, Repetition Index not dessected as it is show in qcat but no corresponding byte
         {UINT,                      "Repetition Total",         4},
         {PLACEHOLDER,               "NB Index",                 0},
-        {PLACEHOLDER,               "SIB1-BR Collision"},
-        {PLACEHOLDER,               "SIBx Collision"},
+        {PLACEHOLDER,               "SIB1-BR Collision",        0},
+        {PLACEHOLDER,               "SIBx Collision",           0},
 };
 
 const Fmt LtePhyPdschDemapperConfigFmt_v103[] = {
@@ -832,35 +832,35 @@ const Fmt LtePhyPdschDemapperConfigFmt_v144[] = {
 };
 
 const ValueName LtePhyPdschDemapperConfig_v23_Modulation[] = {
-        {0, "QPSK"},
-        {1, "16QAM"},
-        {2, "64QAM"},
-        {3, "256QAM"},
+        {0, "QPSK", true},
+        {1, "16QAM", true},
+        {2, "64QAM", true},
+        {3, "256QAM", true},
 };
 
 const ValueName LtePhyPdschDemapperConfig_v23_Carrier_Index[] = {
-        {0, "PCC"},
-        {1, "SCC"}
+        {0, "PCC", true},
+        {1, "SCC", true}
 };
 
 const ValueName LtePhyPdschDemapperConfig_v122_antenna[] = {
-        {0, "1 antenna"},
-        {1, "2 antennas"},
-        {2, "4 antennas"},
-        {3, "4 antennas"},
+        {0, "1 antenna", true},
+        {1, "2 antennas", true},
+        {2, "4 antennas", true},
+        {3, "4 antennas", true},
 };
 
 const ValueName LtePhyPdschDemapperConfig_v122_MVC_Clock[] = {
-        {0, "MIN SVS"},
+        {0, "MIN SVS", true},
 };
 
 const ValueName LtePhyPdschDemapperConfig_v122_OPMode[] = {
-        {1, "TILE0_4RX"},
+        {1, "TILE0_4RX", true},
 };
 
 const ValueName LtePhyPdschDemapperConfig_Joint_Demod_Skip_Reason[] = {
-        {0, "NO_SKIP"},
-        {1, "SW_DISABLE"},
+        {0, "NO_SKIP", true},
+        {1, "SW_DISABLE", true},
 };
 
 // ------------------------------------------------------------
@@ -975,12 +975,12 @@ const Fmt LtePhySubpktFmt_v1_SubpktHeader[] = {
 };
 
 const ValueName LtePhySubpkt_SubpktType[] = {
-        {25, "Serving_Cell_Measurement_Result"}
+        {25, "Serving_Cell_Measurement_Result", true}
 };
 
 const ValueName Valid_Rx_Data[] = {
-        {1, "RX0"},
-        {3, "RX0_RX1"},
+        {1, "RX0", true},
+        {3, "RX0_RX1", true},
 };
 
 // Serving_Cell_Measurement_Result
@@ -1424,17 +1424,17 @@ const Fmt LteRrcMibMessageLogPacketFmt_v17[] = {
 };
 
 const ValueName LteRrcMibMessageLogPacketFmt_OpModeType[] = {
-        {0,  "inband-DifferentPCI"},
-        {1,  "inband-SamePCI"},
-        {2,  "GUARDBAND"},
-        {3,  "STANDALONE"}
+        {0,  "inband-DifferentPCI", true},
+        {1,  "inband-SamePCI", true},
+        {2,  "GUARDBAND", true},
+        {3,  "STANDALONE", true}
 };
 
 const ValueName LteRrcMibMessageLogPacketFmt_RasterOffset[] = {
-        {0,  "KHZ-7DOT5"},
-        {1,  "KHZ-2DOT5"},
-        {2,  "KHZ2DOT5"},
-        {3,  "KHZ7DOT5"}
+        {0,  "KHZ-7DOT5", true},
+        {1,  "KHZ-2DOT5", true},
+        {2,  "KHZ2DOT5", true},
+        {3,  "KHZ7DOT5", true}
 };
 
 // ----------------------------------------------------------------------------
@@ -1461,18 +1461,18 @@ const Fmt LtePdcpUlSrbIntegrityDataPduFmt[] = {
 // MAC_Configuration
 // Jie
 const ValueName LteMacConfigurationSubpkt_SubpktType[] = {
-        {0,  "Config Type Subpacket"},
-        {1,  "DL Config SubPacket"},
-        {2,  "UL Config SubPacket"},
-        {3,  "RACH Config SubPacket"},
-        {4,  "LC Config SubPacket"},
-        {7,  "DL Transport Block"},
-        {8,  "UL Transport Block"},
-        {10, "UL Buffer Status SubPacket"},
-        {11, "UL Tx Statistics SubPacket"},
-        {13, "eMBMS Config SubPacket"},
-        {14, "All Rach Config SubPacket"},
-        {18, "ELS SubPacket"}
+        {0,  "Config Type Subpacket", true},
+        {1,  "DL Config SubPacket", true},
+        {2,  "UL Config SubPacket", true},
+        {3,  "RACH Config SubPacket", true},
+        {4,  "LC Config SubPacket", true},
+        {7,  "DL Transport Block", true},
+        {8,  "UL Transport Block", true},
+        {10, "UL Buffer Status SubPacket", true},
+        {11, "UL Tx Statistics SubPacket", true},
+        {13, "eMBMS Config SubPacket", true},
+        {14, "All Rach Config SubPacket", true},
+        {18, "ELS SubPacket", true}
 };
 
 const Fmt LteMacConfigurationFmt[] = {
@@ -1500,7 +1500,7 @@ const Fmt LteMacConfigurationSubpkt_ConfigType_v2[] = {
 };
 
 const ValueName LteMacConfigurationConfigType_ConfigReason[] = {
-        {2050, "CONNECTION RELEASE"}
+        {2050, "CONNECTION RELEASE", true}
 };
 
 const Fmt LteMacConfigurationSubpkt_DLConfig[] = {
@@ -1522,7 +1522,7 @@ const Fmt LteMacConfigurationSubpkt_DLConfig_Scell_Tag_Info_v2[] = {
 };
 
 const ValueName LteMacConfigurationConfigType_DLConfig_TA_Timer[] = {
-        {0xffff, "Infinity"},
+        {0xffff, "Infinity", true},
 };
 
 const Fmt LteMacConfigurationSubpkt_ULConfig[] = {
@@ -1545,7 +1545,7 @@ const Fmt LteMacConfigurationSubpkt_ULConfig_v2[] = {
 };
 
 const ValueName LteMacConfigurationConfigType_ULConfig_BSR_Timer[] = {
-        {0xffff, "Infinity"},
+        {0xffff, "Infinity", true},
 };
 
 const Fmt LteMacConfigurationSubpkt_RACHConfig[] = {
@@ -1610,7 +1610,7 @@ const Fmt LteMacConfigurationSubpkt_RACHConfig_v5[] = {
 };
 
 const ValueName LteMacConfigurationSubpkt_RACHConfig_Power_offset_Group_B[] = {
-        {0x00, "-Infinity"},
+        {0x00, "-Infinity", true},
 };
 
 const Fmt LteMacConfiguration_RachConfigSubpktPayload_rsrp_prach_list_size_v5[] = {
@@ -1648,7 +1648,7 @@ const Fmt LteMacConfiguration_RachConfigSubpktPayload_prach_last_part[] = {
 };
 
 const ValueName LteMacConfiguration_RachConfigSubpktPayload_prach_initial_ce_level[] = {
-        {0xffff, "NA"},
+        {0xffff, "NA", true},
 };
 
 const Fmt LteMacConfigurationSubpkt_LCConfig[] = {
@@ -1723,20 +1723,20 @@ const Fmt LteMacConfigurationSubpkt_All_Rach_Config_Cell_Info[] = {
 // MAC UL Transport Block
 // Jie
 const ValueName BSREvent[] = {
-        {0, "None"},
-        {1, "Periodic"},
-        {2, "High Data Arrival"},
-        {3, "Robustness BSR"},
+        {0, "None", true},
+        {1, "Periodic", true},
+        {2, "High Data Arrival", true},
+        {3, "Robustness BSR", true},
 };
 
 const ValueName BSRTrig[] = {
-        {0, "No BSR"},
-        {1, "Cancelled"},
-        {2, "L-BSR"},
-        {3, "S-BSR"},
-        {4, "Pad L-BSR"},
-        {5, "Pad S-BSR"},
-        {6, "Pad T-BSR"},
+        {0, "No BSR", true},
+        {1, "Cancelled", true},
+        {2, "L-BSR", true},
+        {3, "S-BSR", true},
+        {4, "Pad L-BSR", true},
+        {5, "Pad S-BSR", true},
+        {6, "Pad T-BSR", true},
 };
 
 const Fmt LteMacULTransportBlockFmt[] = {
@@ -1784,43 +1784,43 @@ const Fmt LteMacULTransportBlock_SubpktV2_SampleFmt[] = {
 
 //xyf
 const ValueName LteMacULTransportBlock_Mac_Hdr_LCId[] = {
-        {0, "CCCH"},
-        {1, "1"},
-        {2, "2"},
-        {3, "3"},
-        {4, "4"},
-        {5, "5"},
-        {6, "6"},
-        {7, "7"},
-        {8, "8"},
-        {9, "9"},
-        {10, "10"},
-        {11, "CCCH (unsupported)"},
-        {12, "CCCH (unsupported)"},
-        {13, "CCCH and Extended PHR (unsupported)"},
-        {14, "Reserved (unsupported)"},
-        {15, "Reserved (unsupported)"},
-        {16, "Extended LC ID field (unsupported)"},
-        {17, "Reserved (unsupported)"},
-        {18, "AUL confirmation (4 octets) (unsupported)"},
-        {19, "AUL confirmation (1 octet) (unsupported)"},
-        {20, "Recommended bit rate query"},
-        {21, "SPS confirmation (unsupported)"},
-        {22, "Truncated Sidelink BSR (unsupported)"},
-        {23, "Sidelink BSR (unsupported)"},
-        {24, "Dual Connectivity PHR (unsupported)"},
-        {25, "Extended PHR (unsupported)"},
-        {26, "PHR"},
-        {27, "C-RNTI"},
-        {28, "T-BSR"},
-        {29, "S-BSR"},
-        {30, "L-BSR"},
-        {31, "Padding"},
+        {0, "CCCH", true},
+        {1, "1", true},
+        {2, "2", true},
+        {3, "3", true},
+        {4, "4", true},
+        {5, "5", true},
+        {6, "6", true},
+        {7, "7", true},
+        {8, "8", true},
+        {9, "9", true},
+        {10, "10", true},
+        {11, "CCCH (unsupported)", true},
+        {12, "CCCH (unsupported)", true},
+        {13, "CCCH and Extended PHR (unsupported)", true},
+        {14, "Reserved (unsupported)", true},
+        {15, "Reserved (unsupported)", true},
+        {16, "Extended LC ID field (unsupported)", true},
+        {17, "Reserved (unsupported)", true},
+        {18, "AUL confirmation (4 octets) (unsupported)", true},
+        {19, "AUL confirmation (1 octet) (unsupported)", true},
+        {20, "Recommended bit rate query", true},
+        {21, "SPS confirmation (unsupported)", true},
+        {22, "Truncated Sidelink BSR (unsupported)", true},
+        {23, "Sidelink BSR (unsupported)", true},
+        {24, "Dual Connectivity PHR (unsupported)", true},
+        {25, "Extended PHR (unsupported)", true},
+        {26, "PHR", true},
+        {27, "C-RNTI", true},
+        {28, "T-BSR", true},
+        {29, "S-BSR", true},
+        {30, "L-BSR", true},
+        {31, "Padding", true},
 };
 
 const ValueName LteMacULTransportBlock_Mac_CE_RBRQ_ULorDL[] = {
-        {0, "DL"},
-        {1, "UL"},
+        {0, "DL", true},
+        {1, "UL", true},
 };
 
 const int LteMacULTransportBlock_Mac_CE_BSR_BufferSizeValue[] = {
@@ -1909,11 +1909,11 @@ const Fmt LteMacULTransportBlock_Mac_CE_RBRQ[] = {
 // MAC DL Transport Block
 // Jie
 const ValueName RNTIType[] = {
-        {0, "C-RNTI"},
-        {2, "P-RNTI"},
-        {3, "RA-RNTI"},
-        {4, "Temporary-C-RNTI"},
-        {5, "SI-RNTI"}
+        {0, "C-RNTI", true},
+        {2, "P-RNTI", true},
+        {3, "RA-RNTI", true},
+        {4, "Temporary-C-RNTI", true},
+        {5, "SI-RNTI", true}
 };
 
 const Fmt LteMacDLTransportBlockFmt[] = {
@@ -1961,38 +1961,38 @@ const Fmt LteMacDLTransportBlock_SubpktV4_SampleFmt[] = {
 
 //xyf
 const ValueName LteMacDLTransportBlock_Mac_Hdr_LCId[] = {
-        {0, "CCCH"},
-        {1, "1"},
-        {2, "2"},
-        {3, "3"},
-        {4, "4"},
-        {5, "5"},
-        {6, "6"},
-        {7, "7"},
-        {8, "8"},
-        {9, "9"},
-        {10, "10"},
-        {11, "Reserved (unsupported)"},
-        {12, "Reserved (unsupported)"},
-        {13, "Reserved (unsupported)"},
-        {14, "Reserved (unsupported)"},
-        {15, "Reserved (unsupported)"},
-        {16, "Extended LC ID field (unsupported)"},
-        {17, "DCQR Command (unsupported)"},
-        {18, "Activation/Deactivation of PDCP Duplication (unsupported)"},
-        {19, "Hibernation (1 octet) (unsupported)"},
-        {20, "Hibernation (4 octet) (unsupported)"},
-        {21, "Activation/Deactivation of CSI-RS (unsupported)"},
-        {22, "Recommended bit rate (unsupported)"},
-        {23, "SC-PTM Stop Indication (unsupported)"},
-        {24, "Activation/Deactivation (4 octet) (unsupported)"},
-        {25, "SC-MCCH, SC-MTCH (unsupported)"},
-        {26, "Long DRX Command"},
-        {27, "Activation/Deactivation (1 octet)"},
-        {28, "CRID"},
-        {29, "TA"},
-        {30, "DRX Command"},
-        {31, "Padding"},
+        {0, "CCCH", true},
+        {1, "1", true},
+        {2, "2", true},
+        {3, "3", true},
+        {4, "4", true},
+        {5, "5", true},
+        {6, "6", true},
+        {7, "7", true},
+        {8, "8", true},
+        {9, "9", true},
+        {10, "10", true},
+        {11, "Reserved (unsupported)", true},
+        {12, "Reserved (unsupported)", true},
+        {13, "Reserved (unsupported)", true},
+        {14, "Reserved (unsupported)", true},
+        {15, "Reserved (unsupported)", true},
+        {16, "Extended LC ID field (unsupported)", true},
+        {17, "DCQR Command (unsupported)", true},
+        {18, "Activation/Deactivation of PDCP Duplication (unsupported)", true},
+        {19, "Hibernation (1 octet) (unsupported)", true},
+        {20, "Hibernation (4 octet) (unsupported)", true},
+        {21, "Activation/Deactivation of CSI-RS (unsupported)", true},
+        {22, "Recommended bit rate (unsupported)", true},
+        {23, "SC-PTM Stop Indication (unsupported)", true},
+        {24, "Activation/Deactivation (4 octet) (unsupported)", true},
+        {25, "SC-MCCH, SC-MTCH (unsupported)", true},
+        {26, "Long DRX Command", true},
+        {27, "Activation/Deactivation (1 octet)", true},
+        {28, "CRID", true},
+        {29, "TA", true},
+        {30, "DRX Command", true},
+        {31, "Padding", true},
 };
 
 const Fmt LteMacDLTransportBlock_Mac_Hdr[] = {
@@ -2146,10 +2146,10 @@ const Fmt LteRlcUlConfigLogPacket_SubpktPayload[] = {
 };
 
 const ValueName LteRlcUlConfigLogPacket_Subpkt_Reason[] = {
-        {1, "Configuration"},
-        {2, "Handover"},
-        {4, "RB Release"},
-        {8, "Radio Link Failure"},
+        {1, "Configuration", true},
+        {2, "Handover", true},
+        {4, "RB Release", true},
+        {8, "Radio Link Failure", true},
 };
 
 const Fmt LteRlcUlConfigLogPacket_Subpkt_ReleasedRB_Header[] = {
@@ -2167,8 +2167,8 @@ const Fmt LteRlcUlConfigLogPacket_Subpkt_AddedModifiedRB_Fmt[] = {
         {UINT, "Action",                      1},
 };
 const ValueName LteRlcUlConfigLogPacket_Subpkt_AddedModifiedRB_Action[] = {
-        {1, "Add"},
-        {2, "Modify"},
+        {1, "Add", true},
+        {2, "Modify", true},
 };
 
 const Fmt LteRlcUlConfigLogPacket_Subpkt_ActiveRB_Header[] = {
@@ -2188,11 +2188,11 @@ const Fmt LteRlcUlConfigLogPacket_Subpkt_ActiveRB_Fmt[] = {
         {UINT,        "Max Retx Threshold", 1},
 };
 const ValueName LteRlcUlConfigLogPacket_Subpkt_ActiveRB_RBMode[] = {
-        {1, "AM"},
+        {1, "AM", true},
 };
 const ValueName LteRlcUlConfigLogPacket_Subpkt_ActiveRB_RBType[] = {
-        {1, "SRB"},
-        {2, "DRB"},
+        {1, "SRB", true},
+        {2, "DRB", true},
 };
 
 const Fmt LteRlcUlConfigLogPacket_SubpktPayload_v3[] = {
@@ -2255,10 +2255,10 @@ const Fmt LteRlcDlConfigLogPacket_SubpktPayload[] = {
 };
 
 const ValueName LteRlcDlConfigLogPacket_Subpkt_Reason[] = {
-        {1, "Configuration"},
-        {2, "Handover"},
-        {4, "RB Release"},
-        {8, "Radio Link Failure"},
+        {1, "Configuration", true},
+        {2, "Handover", true},
+        {4, "RB Release", true},
+        {8, "Radio Link Failure", true},
 };
 
 const Fmt LteRlcDlConfigLogPacket_Subpkt_ReleasedRB_Header[] = {
@@ -2276,8 +2276,8 @@ const Fmt LteRlcDlConfigLogPacket_Subpkt_AddedModifiedRB_Fmt[] = {
         {UINT, "Action",                      1},
 };
 const ValueName LteRlcDlConfigLogPacket_Subpkt_AddedModifiedRB_Action[] = {
-        {1, "Add"},
-        {2, "Modify"},
+        {1, "Add", true},
+        {2, "Modify", true},
 };
 
 const Fmt LteRlcDlConfigLogPacket_Subpkt_ActiveRB_Header[] = {
@@ -2295,11 +2295,11 @@ const Fmt LteRlcDlConfigLogPacket_Subpkt_ActiveRB_Fmt[] = {
         {UINT,        "T Status Prohibit (ms)", 2},
 };
 const ValueName LteRlcDlConfigLogPacket_Subpkt_ActiveRB_RBMode[] = {
-        {1, "AM"},
+        {1, "AM", true},
 };
 const ValueName LteRlcDlConfigLogPacket_Subpkt_ActiveRB_RBType[] = {
-        {1, "SRB"},
-        {2, "DRB"},
+        {1, "SRB", true},
+        {2, "DRB", true},
 };
 
 const Fmt LteRlcDlConfigLogPacket_SubpktPayload_v2[] = {
@@ -2368,7 +2368,7 @@ const Fmt LteRlcUlAmAllPdu_SubpktPayload[] = {
         {UINT, "Number of PDUs",          2},
 };
 const ValueName LteRlcUlAmAllPdu_Subpkt_RBMode[] = {
-        {1, "AM"},
+        {1, "AM", true},
 };
 
 const Fmt LteRlcUlAmAllPdu_Subpkt_PDU_Basic[] = {
@@ -2502,7 +2502,7 @@ const Fmt LteRlcDlAmAllPdu_SubpktPayload[] = {
         {UINT, "Number of PDUs",          2},
 };
 const ValueName LteRlcDlAmAllPdu_Subpkt_RBMode[] = {
-        {1, "AM"},
+        {1, "AM", true},
 };
 
 const Fmt LteRlcDlAmAllPdu_Subpkt_PDU_Basic[] = {
@@ -2731,20 +2731,20 @@ const Fmt LteMacRachTrigger_RachReasonSubpktPayload_v3[] = {
 };
 
 const ValueName LteMacRachTrigger_RachReasonSubpkt_RachReason[] = {
-        {0, "CONNECTION_REQ"},
-        {1, "RLF"},
-        {2, "UL_DATA"},
-        {3, "DL_DATA"},
-        {4, "HO"},
+        {0, "CONNECTION_REQ", true},
+        {1, "RLF", true},
+        {2, "UL_DATA", true},
+        {3, "DL_DATA", true},
+        {4, "HO", true},
 };
 
 const ValueName LteMacRachTrigger_RachReasonSubpkt_GroupChosen[] = {
-        {0, "Group A(0)"},
+        {0, "Group A(0)", true},
 };
 
 const ValueName ValueNameRachContention[] = {
-        {0, "NonContention Based RACH procedure"},    // not confirmed
-        {1, "Contention Based RACH procedure"},
+        {0, "NonContention Based RACH procedure", true},    // not confirmed
+        {1, "Contention Based RACH procedure", true},
 };
 
 // ----------------------------------------------------------------------------
@@ -2789,13 +2789,13 @@ const Fmt LteMacRachAttempt_SubpktPayload_v4[] = {
 };
 
 const ValueName LteMacRachAttempt_Subpkt_RachResult[] = {
-        {0, "Success"},
-        {1, "Failure at MSG2"},
-        {4, "Aborted"},
+        {0, "Success", true},
+        {1, "Failure at MSG2", true},
+        {4, "Aborted", true},
 };
 const ValueName LteMacRachAttempt_Subpkt_ContentionProcedure[] = {
-        {0, "Contention Free RACH Procedure"},
-        {1, "Contention Based RACH procedure"},
+        {0, "Contention Free RACH Procedure", true},
+        {1, "Contention Based RACH procedure", true},
 };
 
 const Fmt LteMacRachAttempt_Subpkt_Msg1[] = {
@@ -2819,11 +2819,11 @@ const Fmt LteMacRachAttempt_Subpkt_Msg1_v4[] = {
 };
 
 const ValueName LteMacRachAttempt_Subpkt_Preamble_index_mask[] = {
-        {0xff, "Invalid"},
+        {0xff, "Invalid", true},
 };
 
 const ValueName LteMacRachAttempt_Subpkt_CELEVEL[] = {
-        {0, "CE_LEVEL_0"},
+        {0, "CE_LEVEL_0", true},
 };
 
 const Fmt LteMacRachAttempt_Subpkt_Msg2[] = {
@@ -2833,8 +2833,8 @@ const Fmt LteMacRachAttempt_Subpkt_Msg2[] = {
         {UINT, "TA value",           2},
 };
 const ValueName LteMacRachAttempt_Subpkt_Msg2_Result[] = {
-        {0, "No"},
-        {1, "True"},
+        {0, "No", true},
+        {1, "True", true},
 };
 
 const Fmt LteMacRachAttempt_Subpkt_Msg3[] = {
@@ -2880,18 +2880,18 @@ const Fmt LtePdcpDlConfig_SubpktPayload[] = {
         {UINT, "Array size",              1},
 };
 const ValueName LtePdcpDlConfig_Subpkt_Reason[] = {
-        {1, "Configuration"},
-        {2, "Handover"},
-        {4, "RB Release"},
+        {1, "Configuration", true},
+        {2, "Handover", true},
+        {4, "RB Release", true},
 };
 const ValueName LtePdcpDlConfig_Subpkt_CipherAlgo[] = {
-        {2, "Snow3G"},
-        {3, "AES"},
-        {7, "None"},
+        {2, "Snow3G", true},
+        {3, "AES", true},
+        {7, "None", true},
 };
 const ValueName LtePdcpDlConfig_Subpkt_IntegAlgo[] = {
-        {2, "AES"},
-        {7, "None"},
+        {2, "AES", true},
+        {7, "None", true},
 };
 
 const Fmt LtePdcpDlConfig_Subpkt_ReleaseRB_Header[] = {
@@ -2910,9 +2910,9 @@ const Fmt LtePdcpDlConfig_Subpkt_AddedModifiedRB_Fmt[] = {
 };
 
 const ValueName LtePdcpDlConfig_Subpkt_AddedModifiedRB_Action[] = {
-        {1, "Add"},
-        {2, "Modify"},
-        {4, "Resume"},
+        {1, "Add", true},
+        {2, "Modify", true},
+        {4, "Resume", true},
 };
 
 const Fmt LtePdcpDlConfig_Subpkt_ActiveRB_Header[] = {
@@ -2945,19 +2945,19 @@ const Fmt LtePdcpDlConfig_Subpkt_ActiveRB_Fmt_v4[] = {
 };
 
 const ValueName LtePdcpDlConfig_Subpkt_ActiveRB_RBmode[] = {
-        {1, "AM"},
+        {1, "AM", true},
 };
 const ValueName LtePdcpDlConfig_Subpkt_ActiveRB_RBtype[] = {
-        {1, "SRB"},
-        {2, "DRB"},
+        {1, "SRB", true},
+        {2, "DRB", true},
 };
 const ValueName LtePdcpDlConfig_Subpkt_ActiveRB_StatusReport[] = {
-        {0, "NO"},
-        {1, "YES"},
+        {0, "NO", true},
+        {1, "YES", true},
 };
 const ValueName LtePdcpDlConfig_Subpkt_ActiveRB_RoHCEnabled[] = {
-        {0, "false"},
-        {1, "true"},
+        {0, "false", true},
+        {1, "true", true},
 };
 
 // ----------------------------------------------------------------------------
@@ -2986,19 +2986,19 @@ const Fmt LtePdcpUlConfig_SubpktPayload[] = {
         {UINT, "Array size",              1},
 };
 const ValueName LtePdcpUlConfig_Subpkt_Reason[] = {
-        {1, "Configuration"},
-        {2, "Handover"},
-        {4, "RB Release"},
-        {8, "Radio Link Failure"},
+        {1, "Configuration", true},
+        {2, "Handover", true},
+        {4, "RB Release", true},
+        {8, "Radio Link Failure", true},
 };
 const ValueName LtePdcpUlConfig_Subpkt_CipherAlgo[] = {
-        {2, "Snow3G"},
-        {3, "AES"},
-        {7, "None"},
+        {2, "Snow3G", true},
+        {3, "AES", true},
+        {7, "None", true},
 };
 const ValueName LtePdcpUlConfig_Subpkt_IntegAlgo[] = {
-        {2, "AES"},
-        {7, "None"},
+        {2, "AES", true},
+        {7, "None", true},
 };
 
 const Fmt LtePdcpUlConfig_Subpkt_ReleaseRB_Header[] = {
@@ -3016,9 +3016,9 @@ const Fmt LtePdcpUlConfig_Subpkt_AddedModifiedRB_Fmt[] = {
         {UINT, "Action",                      1},
 };
 const ValueName LtePdcpUlConfig_Subpkt_AddedModifiedRB_Action[] = {
-        {1, "Add"},
-        {2, "Modify"},
-        {4, "Resume"},
+        {1, "Add", true},
+        {2, "Modify", true},
+        {4, "Resume", true},
 };
 
 const Fmt LtePdcpUlConfig_Subpkt_ActiveRB_Header[] = {
@@ -3072,17 +3072,17 @@ const Fmt LtePdcpUlConfig_Subpkt_ActiveRB_Fmt_v24[] = {
 };
 
 const ValueName LtePdcpUlConfig_Subpkt_ActiveRB_RBmode[] = {
-        {1, "AM"},
+        {1, "AM", true},
 };
 const ValueName LtePdcpUlConfig_Subpkt_ActiveRB_RBtype[] = {
-        {1, "SRB"},
-        {2, "DRB"},
+        {1, "SRB", true},
+        {2, "DRB", true},
 };
 const ValueName LtePdcpUlConfig_Subpkt_ActiveRB_StatusReport[] = {
-        {0, "NO"},
+        {0, "NO", true},
 };
 const ValueName LtePdcpUlConfig_Subpkt_ActiveRB_RoHCEnabled[] = {
-        {0, "false"},
+        {0, "false", true},
 };
 
 // ----------------------------------------------------------------------------
@@ -3106,7 +3106,7 @@ const Fmt LtePdcpUlDataPdu_SubpktPayload[] = {
         {UINT, "SN Length (bit)", 1},
 };
 const ValueName LtePdcpUlDataPdu_Subpkt_Mode[] = {
-        {1, "AM"},
+        {1, "AM", true},
 };
 
 const Fmt LtePdcpUlDataPdu_Subpkt_PDU_Header[] = {
@@ -3252,7 +3252,7 @@ const Fmt LtePdcpDlStats_Subpkt_RB_Fmt_v41[] = {
 };
 
 const ValueName LtePdcpDlStats_Subpkt_RB_Mode[] = {
-        {1, "AM"},
+        {1, "AM", true},
 };
 
 // ----------------------------------------------------------------------------
@@ -3514,11 +3514,11 @@ const Fmt LtePdcpUlStats_Subpkt_RB_Fmt_v26[] = {
 };
 
 const ValueName LtePdcpUlStats_Subpkt_RB_Mode[] = {
-        {1, "AM"},
+        {1, "AM", true},
 };
 
 const ValueName LtePdcpUlStats_Subpkt_UDC_Comp_state[] = {
-        {0, "DISABLE COMP"},
+        {0, "DISABLE COMP", true},
 };
 
 // ----------------------------------------------------------------------------
@@ -3577,7 +3577,7 @@ const Fmt LteRlcUlStats_Subpkt_RB_Fmt[] = {
         {SKIP, NULL,                          4},
 };
 const ValueName LteRlcUlStats_Subpkt_RB_Mode[] = {
-        {1, "AM"},
+        {1, "AM", true},
 };
 
 // ----------------------------------------------------------------------------
@@ -3711,7 +3711,7 @@ const Fmt LteRlcDlStats_Subpkt_RB_Fmt_v3[] = {
         {SKIP, NULL,                        4},
 };
 const ValueName LteRlcDlStats_Subpkt_RB_Mode[] = {
-        {1, "AM"},
+        {1, "AM", true},
 };
 
 // ----------------------------------------------------------------------------
@@ -3735,7 +3735,7 @@ const Fmt LtePdcpDlCtrlPdu_SubpktPayload[] = {
         {UINT, "SN Length (bit)", 1},
 };
 const ValueName LtePdcpDlCtrlPdu_Subpkt_Mode[] = {
-        {1, "AM"},
+        {1, "AM", true},
 };
 
 const Fmt LtePdcpDlCtrlPdu_Subpkt_PDU_Header[] = {
@@ -3773,11 +3773,11 @@ const Fmt LtePdcpDlCtrlPdu_Subpkt_PDU_Fmt_v24[] = {
 };
 
 const ValueName LtePdcpDlCtrlPdu_PDU_Type[] = {
-        {0, "STATUS"},
+        {0, "STATUS", true},
 };
 
 const ValueName LtePdcpDlCtrlPdu_Type[] = {
-        {0, "STATUS REPORT"},
+        {0, "STATUS REPORT", true},
 };
 
 // ----------------------------------------------------------------------------
@@ -3801,7 +3801,7 @@ const Fmt LtePdcpUlCtrlPdu_SubpktPayload[] = {
         {UINT, "SN Length (bit)", 1},
 };
 const ValueName LtePdcpUlCtrlPdu_Subpkt_Mode[] = {
-        {1, "AM"},
+        {1, "AM", true},
 };
 
 const Fmt LtePdcpUlCtrlPdu_Subpkt_PDU_Header[] = {
@@ -3868,39 +3868,39 @@ const Fmt LtePucchPowerControl_Record_Fmt_v4[] = {
 const ValueName LtePucchPowerControl_Record_v4_DCI_Format[] = {
         // Release 8
         // http:    //www.sharetechnote.com/html/LTE_Advanced_DCI.html
-        {0,  "Format 0"},
-        {1,  "Format 1"},
-        {2,  "Format 1A"},
-        {3,  "Format 1B"},
-        {4,  "Format 1C"},
-        {5,  "Format 1D"},
-        {6,  "Format 2"},
-        {7,  "Format 2A"},
-        // {8, "Format 2B"},
-        // {9, "Format 2C"},
-        {10, "Format 3"},
-        {11, "Format 3A"},
+        {0,  "Format 0", true},
+        {1,  "Format 1", true},
+        {2,  "Format 1A", true},
+        {3,  "Format 1B", true},
+        {4,  "Format 1C", true},
+        {5,  "Format 1D", true},
+        {6,  "Format 2", true},
+        {7,  "Format 2A", true},
+        // {8, "Format 2B", true},
+        // {9, "Format 2C", true},
+        {10, "Format 3", true},
+        {11, "Format 3A", true},
 
-        {12, "NO DCI"},
-        {13, "NO DCI"},
-        // {12, "Format 4"},
+        {12, "NO DCI", true},
+        {13, "NO DCI", true},
+        // {12, "Format 4", true},
 };
 const ValueName LtePucchPowerControl_Record_v4_PUCCH_Format[] = {
-        {0, "Format 1"},
-        {1, "Format 1A"},
-        {2, "Format 1B"},
-        {3, "Format 2"},
-        {4, "Format 2A"},
-        {5, "Format 2B"},
-        //    {6, "Format 3"},
-        {6, "Format 1bCS"},
-        {7, "Format 3"},
+        {0, "Format 1", true},
+        {1, "Format 1A", true},
+        {2, "Format 1B", true},
+        {3, "Format 2", true},
+        {4, "Format 2A", true},
+        {5, "Format 2B", true},
+        //    {6, "Format 3", true},
+        {6, "Format 1bCS", true},
+        {7, "Format 3", true},
 };
 
 
 const ValueName LtePucchPowerControl_Record_v4_TPC[] = {
-        {31, "Not present"},
-        {63, "-1"},
+        {31, "Not present", true},
+        {63, "-1", true},
 };
 
 
@@ -3932,33 +3932,33 @@ const Fmt LtePucchPowerControl_Record_Fmt_v24[] = {
 const ValueName LtePucchPowerControl_Record_v24_DCI_Format[] = {
         // Release 8
         // http:    //www.sharetechnote.com/html/LTE_Advanced_DCI.html
-        {0,  "Format 0"},
-        {1,  "Format 1"},
-        {2,  "Format 1A"},
-        {3,  "Format 1B"},
-        {4,  "Format 1C"},
-        {5,  "Format 1D"},
-        {6,  "Format 2"},
-        {7,  "Format 2A"},
-        // {8, "Format 2B"},
-        // {9, "Format 2C"},
-        {10, "Format 3"},
-        {11, "Format 3A"},
-        // {12, "Format 4"},
+        {0,  "Format 0", true},
+        {1,  "Format 1", true},
+        {2,  "Format 1A", true},
+        {3,  "Format 1B", true},
+        {4,  "Format 1C", true},
+        {5,  "Format 1D", true},
+        {6,  "Format 2", true},
+        {7,  "Format 2A", true},
+        // {8, "Format 2B", true},
+        // {9, "Format 2C", true},
+        {10, "Format 3", true},
+        {11, "Format 3A", true},
+        // {12, "Format 4", true},
 };
 const ValueName LtePucchPowerControl_Record_v24_PUCCH_Format[] = {
-        {0, "Format 1"},
-        {1, "Format 1A"},
-        {2, "Format 1B"},
-        {3, "Format 2"},
-        {4, "Format 2A"},
-        {5, "Format 2B"},
+        {0, "Format 1", true},
+        {1, "Format 1A", true},
+        {2, "Format 1B", true},
+        {3, "Format 2", true},
+        {4, "Format 2A", true},
+        {5, "Format 2B", true},
 
-        {6, "Format 1bcs"},    //diff from v2
+        {6, "Format 1bcs", true},    //diff from v2
 };
 const ValueName LtePucchPowerControl_Record_v24_TPC[] = {
-        {31, "Not present"},
-        {63, "-1"},
+        {31, "Not present", true},
+        {63, "-1", true},
 };
 // ----------------------------------------------------------------------------
 // LTE PUSCH Power Control
@@ -4026,29 +4026,29 @@ const Fmt LtePuschPowerControl_Record_Fmt_v25[] = {
 };
 
 const ValueName LtePuschPowerControl_Record_v5_TxType[] = {
-        {1, "Dynamic"},
-        {2, "RACH MSG3"},
+        {1, "Dynamic", true},
+        {2, "RACH MSG3", true},
 };
 const ValueName LtePuschPowerControl_Record_v5_DCI_Format[] = {
         // Release 8
         // http:    //www.sharetechnote.com/html/LTE_Advanced_DCI.html
-        {0,  "Format 0"},
-        {1,  "Format 1"},
-        {2,  "Format 1A"},
-        {3,  "Format 1B"},
-        {4,  "Format 1C"},
-        {5,  "Format 1D"},
-        {6,  "Format 2"},
-        {7,  "Format 2A"},
-        // {8, "Format 2B"},
-        // {9, "Format 2C"},
-        {10, "Format 3"},
-        {11, "Format 3A"},
-        // {12, "Format 4"},
+        {0,  "Format 0", true},
+        {1,  "Format 1", true},
+        {2,  "Format 1A", true},
+        {3,  "Format 1B", true},
+        {4,  "Format 1C", true},
+        {5,  "Format 1D", true},
+        {6,  "Format 2", true},
+        {7,  "Format 2A", true},
+        // {8, "Format 2B", true},
+        // {9, "Format 2C", true},
+        {10, "Format 3", true},
+        {11, "Format 3A", true},
+        // {12, "Format 4", true},
 };
 const ValueName LtePuschPowerControl_Record_v5_TPC[] = {
-        {15, "N/A"},
-        {31, "-1"},
+        {15, "N/A", true},
+        {31, "-1", true},
 };
 
 // ----------------------------------------------------------------------------
@@ -4216,26 +4216,26 @@ const Fmt LtePdcchPhichIndicationReport_Record_v5_p3[] = {
 };
 
 const ValueName LtePdcchPhichIndicationReport_Record_v5_Included[] = {
-        {0, "No"},
-        {1, "Yes"},
+        {0, "No", true},
+        {1, "Yes", true},
 };
 const ValueName LtePdcchPhichIndicationReport_Record_v5_Value[] = {
-        {0, "NACK"},
-        {1, "ACK"},
+        {0, "NACK", true},
+        {1, "ACK", true},
 };
 const ValueName LtePdcchPhichIndicationReport_Record_v5_NewDLTx[] = {
-        {0, "false"},
-        {1, "true"},
+        {0, "false", true},
+        {1, "true", true},
 };
 const ValueName LtePdcchPhichIndicationReport_Record_v5_AggLv[] = {
-        {0, "Agg1"},
-        {1, "Agg2"},
-        {2, "Agg4"},
-        {3, "Agg8"},
+        {0, "Agg1", true},
+        {1, "Agg2", true},
+        {2, "Agg4", true},
+        {3, "Agg8", true},
 };
 const ValueName LtePdcchPhichIndicationReport_Record_v5_SS[] = {
-        {0, "Common"},
-        {1, "UE-specific"},
+        {0, "Common", true},
+        {1, "UE-specific", true},
 };
 
 // ----------------------------------------------------------------------------
@@ -4243,479 +4243,479 @@ const ValueName LtePdcchPhichIndicationReport_Record_v5_SS[] = {
 
 const ValueName ValueNameCarrierIndex[] = {
         // 4 bits
-        {0, "PCC"},
-        {1, "SCC"},
-        {2, "SCC-2"},
+        {0, "PCC", true},
+        {1, "SCC", true},
+        {2, "SCC-2", true},
 };
 
 const ValueName ValueNameAggregationLevel[] = {
         // 2 bits
-        {0, "Agg1"},
-        {1, "Agg2"},
-        {2, "Agg4"},
-        {3, "Agg8"},
+        {0, "Agg1", true},
+        {1, "Agg2", true},
+        {2, "Agg4", true},
+        {3, "Agg8", true},
 
         //added for pdcch_decoding_v24
-        {6, "Agg16"},
-        {7, "Agg24"},
+        {6, "Agg16", true},
+        {7, "Agg24", true},
 };
 
 const ValueName ValueNameSearchSpaceType[] = {
         // 1 bit
-        {0, "Common"},
-        {1, "UE-specific"},
+        {0, "Common", true},
+        {1, "UE-specific", true},
 
         //added for pdcch_decoding_result
-        {3, "Common Type 2"},
-        {2, "User"},
+        {3, "Common Type 2", true},
+        {2, "User", true},
 };
 
 const ValueName ValueNameSubcarrierSpaceType[] = {
         // 3 bits
-        {4, "15 kHz"},
+        {4, "15 kHz", true},
 };
 
 const ValueName ValueNameRNTIType[] = {
         // 4 bits
-        {0, "C-RNTI"},
-        {1, "SPS-RNTI"},
-        {2, "P-RNTI"},
-        {3, "RA-RNTI"},
-        {4, "Temporary-C-RNTI"},
-        {5, "SI-RNTI"},
-        {6, "TPC-PUSCH-RNTI"},
-        {7, "TPC-PUCCH-RNTI"},
-        {8, "MBMS RNTI"},
+        {0, "C-RNTI", true},
+        {1, "SPS-RNTI", true},
+        {2, "P-RNTI", true},
+        {3, "RA-RNTI", true},
+        {4, "Temporary-C-RNTI", true},
+        {5, "SI-RNTI", true},
+        {6, "TPC-PUSCH-RNTI", true},
+        {7, "TPC-PUCCH-RNTI", true},
+        {8, "MBMS RNTI", true},
 };
 const ValueName ValueNameNBIoT_RNTIType[] = {
         // 2 bits
-        {0, "C-RNTI"},
-        {2, "TC-RNTI"},
+        {0, "C-RNTI", true},
+        {2, "TC-RNTI", true},
 };
 
 const ValueName ValueNameNB1_PDSCH_RNTIType[] = {
         // 3 bits
-        {1, "C-RNTI"},       
-        {3, "RA-RNTI"},
-        {4, "TC-RNTI"},
+        {1, "C-RNTI", true},       
+        {3, "RA-RNTI", true},
+        {4, "TC-RNTI", true},
 };
 
 const ValueName ValueNameNB1_Sum_Sys_Info_MeasBWType[] = {
         // 4 bits
-        {0, "mbw6 RBs"},
+        {0, "mbw6 RBs", true},
 };
 
 const ValueName ValueNameNB1_GM_TX_Report_Subcarrier_Space_Type[] = {
         // 3 bits
-        {4, "15 kHz"},
+        {4, "15 kHz", true},
 };
 
 const ValueName ValueNameNPUSCHFormat_1_TX_Type[] = {
         // 1 bits
-        {0,  ""},
-        {1,  "New Transmission"},
+        {0,  "", true},
+        {1,  "New Transmission", true},
 };
 const ValueName ValueNameNPUSCHFormat[] = {
         // 1 bits
-        {0,  "Format 1"},
-        {1,  "Format 2"},
+        {0,  "Format 1", true},
+        {1,  "Format 2", true},
 };
 const ValueName ValueNameDCIFormat[] = {
         // 4 bits
         // Release 8
         // http:    //www.sharetechnote.com/html/LTE_Advanced_DCI.html
-        {0,  "Format 0"},
-        {1,  "Format 1"},
-        {2,  "Format 1A"},
-        {3,  "Format 1B"},
-        {4,  "Format 1C"},
-        {5,  "Format 1D"},
-        {6,  "Format 2"},
-        {7,  "Format 2A"},
-        {8,  "Format 3"},
-        {9,  "Format 3A"},
+        {0,  "Format 0", true},
+        {1,  "Format 1", true},
+        {2,  "Format 1A", true},
+        {3,  "Format 1B", true},
+        {4,  "Format 1C", true},
+        {5,  "Format 1D", true},
+        {6,  "Format 2", true},
+        {7,  "Format 2A", true},
+        {8,  "Format 3", true},
+        {9,  "Format 3A", true},
 
         //added for PDCCH_Decoding_v24
-        {12, "Format 60A"},
-        {13, "Format 61A"},
-        {15, "Reserved"},
+        {12, "Format 60A", true},
+        {13, "Format 61A", true},
+        {15, "Reserved", true},
 
         //xyf
-        {14, "Format 62"},
+        {14, "Format 62", true},
 };
 
 const ValueName ValueNameMatchOrNot[] = {
         // 1 bit
-        {0, "Mismatch"},
-        {1, "Match"},
+        {0, "Mismatch", true},
+        {1, "Match", true},
 };
 
 const ValueName ValueNamePruneStatus[] = {
         // 11 bits
         //
-        {1,   "SUCCESS_DCI0"},
-        {3,   "SUCCESS_DCI1A"},
-        {4,   "SUCCESS_DCI1C"},
-        {6,   "SUCCESS_DCI2_2A_2B"},
-        {8,   "TAIL_MISMATCH"},
-        {9,   "FAIL_SURVIVOR_SELECT"},
-        {10,  "PADDING_ERROR"},
-        {13,  "RB_ALLOC_SET_NUM_ERROR_TYPE1"},
-        {17,  "DUPLICATE_HARQ_ID_ERROR"},
-        {19,  "UNEXPECTED_PAYLOAD_SIZE"},
-        {24,  "BAD_RIV_DCI0"},
-        {25,  "RB_ALLOC_ERROR_DCI0"},
-        {26,  "INVALID_RB_NUM_DCI0"},
-        {32,  "BAD_RIV_DCI1A"},
-        {33,  "RB_ALLOC_ERROR_DCI1A"},
-        {34,  "INVALID_RB_NUM_DCI1A"},
-        {36,  "RETURN_DL_DATA_ARRIVAL_DCI1A"},
-        {44,  "RB_ALLOC_ERROR_DCI1C"},
-        {48,  "PMI_ERROR_DCI2_2A"},
-        {50,  "NUM_LAYERS_ERROR_DCI2_2A_TB1"},
-        {64,  "FAIL_SER_ENGYMTRC_CHECK"},
+        {1,   "SUCCESS_DCI0", true},
+        {3,   "SUCCESS_DCI1A", true},
+        {4,   "SUCCESS_DCI1C", true},
+        {6,   "SUCCESS_DCI2_2A_2B", true},
+        {8,   "TAIL_MISMATCH", true},
+        {9,   "FAIL_SURVIVOR_SELECT", true},
+        {10,  "PADDING_ERROR", true},
+        {13,  "RB_ALLOC_SET_NUM_ERROR_TYPE1", true},
+        {17,  "DUPLICATE_HARQ_ID_ERROR", true},
+        {19,  "UNEXPECTED_PAYLOAD_SIZE", true},
+        {24,  "BAD_RIV_DCI0", true},
+        {25,  "RB_ALLOC_ERROR_DCI0", true},
+        {26,  "INVALID_RB_NUM_DCI0", true},
+        {32,  "BAD_RIV_DCI1A", true},
+        {33,  "RB_ALLOC_ERROR_DCI1A", true},
+        {34,  "INVALID_RB_NUM_DCI1A", true},
+        {36,  "RETURN_DL_DATA_ARRIVAL_DCI1A", true},
+        {44,  "RB_ALLOC_ERROR_DCI1C", true},
+        {48,  "PMI_ERROR_DCI2_2A", true},
+        {50,  "NUM_LAYERS_ERROR_DCI2_2A_TB1", true},
+        {64,  "FAIL_SER_ENGYMTRC_CHECK", true},
 
-        {70,  "NUM_LAYERS_EXCEED_NUM_RX"},
+        {70,  "NUM_LAYERS_EXCEED_NUM_RX", true},
 
         //added for pdcch_decoding v24
-        {200, "PDCCH_DEBUG_SUCCESS_DCI60A"},
-        {201, "PDCCH_DEBUG_SUCCESS_DCI61A"},
+        {200, "PDCCH_DEBUG_SUCCESS_DCI60A", true},
+        {201, "PDCCH_DEBUG_SUCCESS_DCI61A", true},
 
         //xyf
-        {202, "PDCCH_DEBUG_SUCCESS_DCI62"},
-        {216, "PDCCH_DEBUG_SUCCESS_DCI62_EARLY_TERMINATION"},
+        {202, "PDCCH_DEBUG_SUCCESS_DCI62", true},
+        {216, "PDCCH_DEBUG_SUCCESS_DCI62_EARLY_TERMINATION", true},
 
 };
 
 const ValueName ValueNameFrameStructure[] = {
-        {0, "FDD"},
-        {1, "TDD"},
+        {0, "FDD", true},
+        {1, "TDD", true},
 };
 
 const ValueName ValueNameDuplexingMode[] = {
-        {0, "FDD"},
-        {1, "TDD"},
+        {0, "FDD", true},
+        {1, "TDD", true},
 };
 
 const ValueName ValueNameNumNBAntennas[] = {
-        {0, "1 or 2"},
-        {1, "2 antennas"},
-        {2, "4 antennas"},
+        {0, "1 or 2", true},
+        {1, "2 antennas", true},
+        {2, "4 antennas", true},
 };
 
 const ValueName ValueNameNumNBAntennas_PDCCH_V141[] = {
-        {0, "1 or 2"},
-        {1, "4 antennas"},
+        {0, "1 or 2", true},
+        {1, "4 antennas", true},
 };
 
 const ValueName ValueNameTrueOrFalse[] = {
-        {0, "False"},
-        {1, "True"},
+        {0, "False", true},
+        {1, "True", true},
 };
 
 const ValueName ValueNameHARQLogStatus[] = {
-        {0, "Normal"},
+        {0, "Normal", true},
 };
 
 const ValueName ValueNameCPType[] = {
         // 1 bit
-        {0, "Normal"},
+        {0, "Normal", true},
 };
 
 const ValueName ValueNameNormalOrNot[] = {
-        {0, "Normal"},
+        {0, "Normal", true},
 };
 
 const ValueName ValueNamePassOrFail[] = {
-        {0, "Fail"},
-        {1, "Pass"},
+        {0, "Fail", true},
+        {1, "Pass", true},
 };
 
 const ValueName ValueNameNumber[] = {
-        {0, "First"},
-        {1, "Second"},
-        {2, "Third"},
-        {3, "Fourth"},
-        {4, "Fifth"},
-        {5, "Sixth"},
-        {6, "Seventh"},
-        {7, "Eighth"},
+        {0, "First", true},
+        {1, "Second", true},
+        {2, "Third", true},
+        {3, "Fourth", true},
+        {4, "Fifth", true},
+        {5, "Sixth", true},
+        {6, "Seventh", true},
+        {7, "Eighth", true},
 };
 
 const ValueName ValueNameCompandingStats[] = {
-        {0, "3 bit LLR"},
-        {1, "4 bit LLR"},
-        {2, "6 bit LLR"},
+        {0, "3 bit LLR", true},
+        {1, "4 bit LLR", true},
+        {2, "6 bit LLR", true},
 };
 
 const ValueName ValueNameEnableOrDisable[] = {
-        {0, "Disabled"},
-        {1, "Enabled"},
+        {0, "Disabled", true},
+        {1, "Enabled", true},
 };
 
 const ValueName ValueNameYesOrNo[] = {
-        {0, "No"},
-        {1, "Yes"},
+        {0, "No", true},
+        {1, "Yes", true},
 };
 
 const ValueName ValueNameAckOrNack[] = {
-        {0, "NACK"},
-        {1, "ACK"},
+        {0, "NACK", true},
+        {1, "ACK", true},
 };
 
 const ValueName ValueNameModulation[] = {
-        {0, "BPSK"},
-        {1, "QPSK"},
-        {2, "16-QAM"},
-        {3, "64-QAM"},
+        {0, "BPSK", true},
+        {1, "QPSK", true},
+        {2, "16-QAM", true},
+        {3, "64-QAM", true},
 };
 
 const ValueName ValueNameExistsOrNone[] = {
-        {0, "None"},
-        {1, "Exists"},
+        {0, "None", true},
+        {1, "Exists", true},
 };
 
 const ValueName ValueNameOnOrOff[] = {
-        {0, "Off"},
-        {1, "On"},
+        {0, "Off", true},
+        {1, "On", true},
 };
 
 const ValueName ValueNameCSFTxMode[] = {
-        {0, "TM_Invalid"},
-        {1, "TM_Single_Ant_Port_0"},
-        {2, "TM_TD_Rank_1"},
-        {3, "TM_OL_SM"},
-        {4, "TM_CL_SM"},
-        {5, "TM_MU_MIMO"},
-        {6, "TM_CL_Rank_1_PC"},
-        {7, "TM_Single_Ant_Port_5"},
+        {0, "TM_Invalid", true},
+        {1, "TM_Single_Ant_Port_0", true},
+        {2, "TM_TD_Rank_1", true},
+        {3, "TM_OL_SM", true},
+        {4, "TM_CL_SM", true},
+        {5, "TM_MU_MIMO", true},
+        {6, "TM_CL_Rank_1_PC", true},
+        {7, "TM_Single_Ant_Port_5", true},
 };
 
 const ValueName ValueNameRankIndex[] = {
-        {0, "Rank 1"},
-        {1, "Rank 2"},
-        {2, "Rank 3"},
-        {3, "Rank 4"},
+        {0, "Rank 1", true},
+        {1, "Rank 2", true},
+        {2, "Rank 3", true},
+        {3, "Rank 4", true},
 };
 
 const ValueName ValueNameCsiMeasSetIndex[] = {
-        {0, "CSI0"},
+        {0, "CSI0", true},
 };
 
 const ValueName ValueNamePuschReportingMode[] = {
-        {0, "MODE_APERIODIC_RM12"},
-        {1, "MODE_APERIODIC_RM20"},
-        {2, "MODE_APERIODIC_RM22"},
-        {3, "MODE_APERIODIC_RM30"},
-        {4, "MODE_APERIODIC_RM31"},
+        {0, "MODE_APERIODIC_RM12", true},
+        {1, "MODE_APERIODIC_RM20", true},
+        {2, "MODE_APERIODIC_RM22", true},
+        {3, "MODE_APERIODIC_RM30", true},
+        {4, "MODE_APERIODIC_RM31", true},
 };
 
 const ValueName ValueNamePucchReportType_v22[] = {
-        {1, "Type 2, Wideband CQI, PMI Feedback"},
-        {2, "Type 3, RI Feedback"},
+        {1, "Type 2, Wideband CQI, PMI Feedback", true},
+        {2, "Type 3, RI Feedback", true},
 };
 
 const ValueName ValueNamePucchReportingMode_v22[] = {
-        {1, "MODE_1_1"},
+        {1, "MODE_1_1", true},
 };
 
 const ValueName ValueNamePucchReportType[] = {
-        {2, "Type 2, Wideband CQI, PMI Feedback"},
-        {3, "Type 3, RI Feedback"},
+        {2, "Type 2, Wideband CQI, PMI Feedback", true},
+        {3, "Type 3, RI Feedback", true},
 };
 
 const ValueName ValueNamePucchReportingMode[] = {
-        {2, "MODE_1_1"},
+        {2, "MODE_1_1", true},
 };
 
 const ValueName ValueNameTransmissionScheme[] = {
         // 4 bits
-        {1, "Single Antenna Port (SISO or SIMO)"},
-        {2, "Transmit diversity"},
-        {3, "Open-loop spatial multiplexing"},
-        {4, "Closed-loop spatial multiplexing"},
-        {5, "Multi-User MIMO"},
-        {6, "Closed-loop rank-1 spatial multiplexing"},
-        {7, "Single Antenna Port Beamforming"},
-        {8, "Dual-Layer Beamforming"},
+        {1, "Single Antenna Port (SISO or SIMO)", true},
+        {2, "Transmit diversity", true},
+        {3, "Open-loop spatial multiplexing", true},
+        {4, "Closed-loop spatial multiplexing", true},
+        {5, "Multi-User MIMO", true},
+        {6, "Closed-loop rank-1 spatial multiplexing", true},
+        {7, "Single Antenna Port Beamforming", true},
+        {8, "Dual-Layer Beamforming", true},
 };
 
 const ValueName ValueNameFrequencySelectivePMI[] = {
-        {0, "WideBand"},
+        {0, "WideBand", true},
 };
 
 const ValueName ValueNameCDRXEvent[] = {
-        {0,  "ON_DURATION_TIMER_START"},
-        {1,  "ON_DURATION_TIMER_END"},
-        {2,  "SHORT_CYCLE_START"},
-        {3,  "SHORT_CYCLE_END"},
-        {4,  "LONG_CYCLE_START"},
-        {5,  "LONG_CYCLE_END"},
-        {6,  "UL_RETX_TIMER_START"},
-        {7,  "UL_RETX_TIMER_END"},
-        {8,  "INACTIVITY_TIMER_START"},
-        {9,  "INACTIVITY_TIMER_END"},
-        {10, "DL_DRX_RETX_TIMER_START"},
-        {11, "DL_DRX_RETX_TIMER_END"},
-        {12, "CDRX_ON_2_OFF"},
-        {13, "CDRX_OFF_2_ON"},
-        {22, "WAKEUP_MISSED_CYCLE_TIMER_START"},
-        {23, "WAKEUP_MISSED_CYCLE_TIMER_END"},
-        {24, "CATM1_UL_RETX_TIMER_START"},
-        {25, "CATM1_UL_RETX_TIMER_END"},
+        {0,  "ON_DURATION_TIMER_START", true},
+        {1,  "ON_DURATION_TIMER_END", true},
+        {2,  "SHORT_CYCLE_START", true},
+        {3,  "SHORT_CYCLE_END", true},
+        {4,  "LONG_CYCLE_START", true},
+        {5,  "LONG_CYCLE_END", true},
+        {6,  "UL_RETX_TIMER_START", true},
+        {7,  "UL_RETX_TIMER_END", true},
+        {8,  "INACTIVITY_TIMER_START", true},
+        {9,  "INACTIVITY_TIMER_END", true},
+        {10, "DL_DRX_RETX_TIMER_START", true},
+        {11, "DL_DRX_RETX_TIMER_END", true},
+        {12, "CDRX_ON_2_OFF", true},
+        {13, "CDRX_OFF_2_ON", true},
+        {22, "WAKEUP_MISSED_CYCLE_TIMER_START", true},
+        {23, "WAKEUP_MISSED_CYCLE_TIMER_END", true},
+        {24, "CATM1_UL_RETX_TIMER_START", true},
+        {25, "CATM1_UL_RETX_TIMER_END", true},
 };
 
 const ValueName ValueNameWcdmaRrcStates[] = {
-        {0, "DISCONNECTED"},
-        {1, "CONNECTING"},
-        {2, "CELL_FACH"},
-        {3, "CELL_DCH"},
-        {4, "CELL_PCH"},
-        {5, "URA_PCH"},
+        {0, "DISCONNECTED", true},
+        {1, "CONNECTING", true},
+        {2, "CELL_FACH", true},
+        {3, "CELL_DCH", true},
+        {4, "CELL_PCH", true},
+        {5, "URA_PCH", true},
 };
 
 const ValueName ValueNameCellIndex[] = {
         // 4 bits
-        {0, "PCell"},
-        {1, "1_SCell"},
-        {2, "2_SCell"},
+        {0, "PCell", true},
+        {1, "1_SCell", true},
+        {2, "2_SCell", true},
 };
 
 const ValueName ValueNameBandClassGSM[] = {
         // 4 bits
-        {0,  "Current 900/1800 Setting"},
-        {10, "1900 PCS"},
-        {11, "GSM 850"},
+        {0,  "Current 900/1800 Setting", true},
+        {10, "1900 PCS", true},
+        {11, "GSM 850", true},
 };
 
 const ValueName ValueNameBandClassCDMA[] = {
-        {0,   "800 MHz Cellular"},
-        {1,   "1.8 to 2.0 GHz PCS"},
-        {10,  "Secondary 800 MHz"},
-        {255, "Disabled"},
+        {0,   "800 MHz Cellular", true},
+        {1,   "1.8 to 2.0 GHz PCS", true},
+        {10,  "Secondary 800 MHz", true},
+        {255, "Disabled", true},
 };
 
 const ValueName ValueNameTimerState[] = {
         // 8 bits
-        {0, "Stopped"},
-        {1, "Running"},
-        {2, "Expired"},
+        {0, "Stopped", true},
+        {1, "Running", true},
+        {2, "Expired", true},
 };
 
 const ValueName ValueNameTechnology[] = {
-        {0, "1x CDMA"},
+        {0, "1x CDMA", true},
 };
 
 const ValueName ValueNameQueue[] = {
-        {0, "HPQ0"},
-        {2, "Reserved"},
+        {0, "HPQ0", true},
+        {2, "Reserved", true},
 };
 
 const ValueName ValueNamePilotSet[] = {
-        {0, "PreCandidate Set"},
-        {1, "Active Set"},
-        {2, "Candidate Set"},
-        {4, "Neighbor Set"},
-        {8, "Remaining Set"},
+        {0, "PreCandidate Set", true},
+        {1, "Active Set", true},
+        {2, "Candidate Set", true},
+        {4, "Neighbor Set", true},
+        {8, "Remaining Set", true},
 };
 
 const ValueName ValueNameSearcherState[] = {
-        {2, "Synchronization"},
-        {3, "Idle"},
-        {4, "Traffic"},
+        {2, "Synchronization", true},
+        {3, "Idle", true},
+        {4, "Traffic", true},
 };
 
 const ValueName ValueNameSRSShortingfor2ndSlot[] = {
         // 1 bit
-        {0, "Normal"},
-        {1, "Shorten 2nd"},
+        {0, "Normal", true},
+        {1, "Shorten 2nd", true},
 };
 
 const ValueName ValueNameCipherAlgo[] = {
         // 1 byte
-        {2, "LTE SNOW-3G"},
-        {3, "LTE AES"},
-        {7, "None"},
+        {2, "LTE SNOW-3G", true},
+        {3, "LTE AES", true},
+        {7, "None", true},
 };
 
 const ValueName ValueNamePdcpSNLength[] = {
-        {0, "5 bit"},
-        {1, "7 bit"},
-        {2, "12 bit"},
+        {0, "5 bit", true},
+        {1, "7 bit", true},
+        {2, "12 bit", true},
 };
 
 const ValueName ValueNamePdcpCipherDataPduMode[] = {
-        {0, "AM"},
+        {0, "AM", true},
 };
 
 const ValueName ValueNameGSMRxLevMin[] = {
-        {0,  "-111 dBm to -110 dBm"},
-        {1,  "-110 dBm to -109 dBm"},
-        {2,  "-109 dBm to -108 dBm"},
-        {3,  "-108 dBm to -107 dBm"},
-        {4,  "-107 dBm to -106 dBm"},
-        {5,  "-106 dBm to -105 dBm"},
-        {6,  "-105 dBm to -104 dBm"},
-        {7,  "-104 dBm to -103 dBm"},
-        {8,  "-103 dBm to -102 dBm"},
-        {9,  "-102 dBm to -101 dBm"},
+        {0,  "-111 dBm to -110 dBm", true},
+        {1,  "-110 dBm to -109 dBm", true},
+        {2,  "-109 dBm to -108 dBm", true},
+        {3,  "-108 dBm to -107 dBm", true},
+        {4,  "-107 dBm to -106 dBm", true},
+        {5,  "-106 dBm to -105 dBm", true},
+        {6,  "-105 dBm to -104 dBm", true},
+        {7,  "-104 dBm to -103 dBm", true},
+        {8,  "-103 dBm to -102 dBm", true},
+        {9,  "-102 dBm to -101 dBm", true},
         // Not sure about following lines
-        {10, "-101 dBm to -100 dBm"},
-        {11, "-100 dBm to -99 dBm"},
-        {12, "-99 dBm to -98 dBm"},
-        {13, "-98 dBm to -97 dBm"},
-        {14, "-97 dBm to -96 dBm"},
-        {15, "-96 dBm to -95 dBm"},
-        {16, "-95 dBm to -94 dBm"},
-        {17, "-94 dBm to -93 dBm"},
+        {10, "-101 dBm to -100 dBm", true},
+        {11, "-100 dBm to -99 dBm", true},
+        {12, "-99 dBm to -98 dBm", true},
+        {13, "-98 dBm to -97 dBm", true},
+        {14, "-97 dBm to -96 dBm", true},
+        {15, "-96 dBm to -95 dBm", true},
+        {16, "-95 dBm to -94 dBm", true},
+        {17, "-94 dBm to -93 dBm", true},
 };
 
 const ValueName ValueNameGSMAdditionalParam[] = {
-        {0, "SysInfo 16/17 not supported"},
+        {0, "SysInfo 16/17 not supported", true},
 };
 
 const ValueName ValueNameGSMPenaltyTime[] = {
-        {0, "20 sec"},
+        {0, "20 sec", true},
 };
 
 const ValueName ValueNameSupportedOrNot[] = {
-        {0, "Not Supported"},
-        {1, "Supported"},
+        {0, "Not Supported", true},
+        {1, "Supported", true},
 };
 
 const ValueName ValueNameGSMChannelType[] = {
-        {0, "DCCH"},
-        {1, "BCCH"},
-        {3, "CCCH"},
-        {4, "SACCH"},
+        {0, "DCCH", true},
+        {1, "BCCH", true},
+        {3, "CCCH", true},
+        {4, "SACCH", true},
 };
 
 const ValueName ValueNameGSMSignalingMessageType[] = {
-        {0,  "System Information Type 13"},
-        {7,  "System Information Type 2quater"},
-        {13, "Channel Release"},
-        {21, "Measurement Report"},
-        {22, "Classmark Change"},
-        {25, "System Information Type 1"},
-        {26, "System Information Type 2"},
-        {27, "System Information Type 3"},
-        {28, "System Information Type 4"},
-        {29, "System Information Type 5"},
-        {63, "Immediate Assignment"},
+        {0,  "System Information Type 13", true},
+        {7,  "System Information Type 2quater", true},
+        {13, "Channel Release", true},
+        {21, "Measurement Report", true},
+        {22, "Classmark Change", true},
+        {25, "System Information Type 1", true},
+        {26, "System Information Type 2", true},
+        {27, "System Information Type 3", true},
+        {28, "System Information Type 4", true},
+        {29, "System Information Type 5", true},
+        {63, "Immediate Assignment", true},
 };
 
 const ValueName ValueNameDirection[] = {
-        {0, "Uplink"},
-        {1, "Downlink"},
+        {0, "Uplink", true},
+        {1, "Downlink", true},
 };
 
 const ValueName ValueNameGNSSBDSEngineType[] = {
-        {6,"GEN9"},
+        {6,"GEN9", true},
 };
 const ValueName ValueNameBdsObsState[]={
-        {1,"SRCH"},
-        {4,"TRK VER"},
-	{5,"TRK"}
+        {1,"SRCH", true},
+        {4,"TRK VER", true},
+	{5,"TRK", true}
 };
 
 // ----------------------------------------------------------------------------
