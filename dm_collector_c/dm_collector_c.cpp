@@ -626,13 +626,41 @@ dm_collector_c_generate_diag_cfg(PyObject *self, PyObject *args) {
 static PyObject *
 dm_collector_c_feed_binary(PyObject *self, PyObject *args) {
     (void) self;
-    const char *b;
-    int length;
-    if (!PyArg_ParseTuple(args, "y#", &b, &length)) {
-         printf("dm_collector_c_feed_binary returns NULL\n");
+    
+    // Check the argument tuple
+    if (!PyTuple_Check(args)) {
+        PyErr_SetString(PyExc_TypeError, "Arguments must be a tuple");
         return NULL;
     }
-    feed_binary(b, length);
+    
+    if (PyTuple_Size(args) != 1) {
+        PyErr_SetString(PyExc_TypeError, "Expected exactly 1 argument");
+        return NULL;
+    }
+    
+    PyObject *arg0 = PyTuple_GetItem(args, 0);
+    
+    // Check if it's a bytes object
+    if (!PyBytes_Check(arg0)) {
+        PyErr_SetString(PyExc_TypeError, "Argument must be a bytes object");
+        return NULL;
+    }
+    
+    // Get data directly from bytes object
+    char *b = PyBytes_AsString(arg0);
+    Py_ssize_t length = PyBytes_Size(arg0);
+    
+    // Add additional safety checks
+    if (b == NULL) {
+        PyErr_SetString(PyExc_ValueError, "Failed to extract bytes data");
+        return NULL;
+    }
+    if (length < 0) {
+        PyErr_SetString(PyExc_ValueError, "Invalid bytes length");
+        return NULL;
+    }
+    
+    feed_binary(b, (int)length);
     Py_RETURN_NONE;
 }
 

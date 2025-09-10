@@ -44,7 +44,8 @@ dm_collector_c_module = Extension('mobile_insight.monitor.dm_collector.dm_collec
                                            "dm_collector_c/log_config.cpp",
                                            "dm_collector_c/log_packet.cpp",
                                            "dm_collector_c/utils.cpp", ],
-                                  define_macros=[('EXPOSE_INTERNAL_LOGS', 1), ]
+                                  define_macros=[('EXPOSE_INTERNAL_LOGS', 1), ],
+                                  extra_compile_args=["-O2", "-g"]
                                   )
 
 
