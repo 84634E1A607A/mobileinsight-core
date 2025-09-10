@@ -36,8 +36,7 @@ all: ws_dissector
 android: android_ws_dissector android_pie_ws_dissector
 
 ws_dissector: ws_dissector.cpp packet-aww.cpp
-	g++ $^ -o $@ `pkg-config --libs --cflags glib-2.0` -I"$(WS_SRC_PATH)" \
-	-L"$(WS_LIB_PATH)" -lwireshark -lwsutil -lwiretap
+	g++ $^ -o $@ -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -I/usr/include/sysprof-6 -pthread -lglib-2.0 -I'../../ws/wireshark-4.4.9/' -I'../../ws/wireshark-4.4.9/include/' -L../../ws-bin/lib/ -lwireshark -lwsutil -lwiretap
 
 android_ws_dissector: ws_dissector.cpp packet-aww.cpp
 	$(CXX) -v $^ -o $@ $(ANDROID_CC_FLAGS)

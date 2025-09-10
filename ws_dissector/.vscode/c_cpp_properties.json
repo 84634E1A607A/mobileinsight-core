@@ -1,0 +1,32 @@
+{
+  "configurations": [
+    {
+      "name": "Linux",
+      "includePath": [
+        "${workspaceFolder}/**",
+        "/usr/include/glib-2.0",
+        "/usr/lib/glib-2.0/include",
+        "/usr/include/sysprof-6",
+        "${workspaceFolder}/../../ws/wireshark-4.4.9",
+        "${workspaceFolder}/../../ws/wireshark-4.4.9/include",
+        "/usr/include"
+      ],
+      "defines": [],
+      "compilerPath": "/usr/bin/g++",
+      "cStandard": "c11",
+      "cppStandard": "c++17",
+      "intelliSenseMode": "linux-gcc-x64",
+      "browse": {
+        "path": [
+          "${workspaceFolder}/**",
+          "/usr/include",
+          "/usr/include/glib-2.0",
+          "/usr/lib/glib-2.0/include",
+          "${workspaceFolder}/../../ws/wireshark-4.4.9/include"
+        ],
+        "limitSymbolsToIncludedHeaders": true
+      }
+    }
+  ],
+  "version": 4
+}
