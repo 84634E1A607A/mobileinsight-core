@@ -226,7 +226,7 @@ class WindowClass(QMainWindow):
         menubar = self.menuBar()
         if menubar:
             file_menu = menubar.addMenu('File')
-            edit_menu = menubar.addMenu('Edit')
+            # edit_menu = menubar.addMenu('Edit')
 
             open_action = QAction('Open', self)
             open_action.setShortcut('Ctrl+O')
@@ -242,7 +242,14 @@ class WindowClass(QMainWindow):
 
         # Toolbar
         self.toolbar = QToolBar()
+        self.toolbar.setWindowTitle("Tool bar")
         self.addToolBar(self.toolbar)
+        try:
+            toggle_action = self.toolbar.toggleViewAction()
+            if toggle_action is not None:
+                toggle_action.setText("Show tool bar")
+        except Exception:
+            pass
 
         # Helper function to create icons
         def create_icon(icon_name: str) -> QIcon:
@@ -312,7 +319,7 @@ class WindowClass(QMainWindow):
         left_panel.setLayout(left_layout)
         
         self.status_text = QLabel(
-            "Welcome to MobileInsight 6.0 beta!\n\nMobileInsight is a Python 3 package for mobile network monitoring and analysis on the end device.")
+            "Welcome to MobileInsight 6.1.0 beta!\n\nMobileInsight is a Python 3 package for mobile network monitoring and analysis on the end device.")
         self.status_text.setWordWrap(True)
         
         self.details_text = QTreeWidget()
@@ -439,11 +446,12 @@ class WindowClass(QMainWindow):
     def OnAbout(self) -> None:
         about_text = (
                 'MobileInsight GUI\n\n\n' +
-                'Copyright (c) 2014-2016 MobileInsight Team\n\n' +
+                'Copyright (c) 2014-2025 MobileInsight Team\n\n' +
                 'Developers:\n    Moustafa Alzantot,\n' +
                 '    Priyanka Avinash Kachare,\n' +
                 '    Michael Ivan,\n' +
-                '    Yuanjie Li')
+                '    Yuanjie Li\n' +
+                '    Yekai Dong')
         QMessageBox.information(self, "About MobileInsight GUI", about_text)
 
     def OnGridSelect(self, row: int, column: int) -> None:
@@ -636,7 +644,22 @@ class WindowClass(QMainWindow):
 
 def main() -> None:
     app = QApplication(sys.argv)
+    # Set application/dialog icon from the icons directory if available
+    try:
+        icon_path = ICONS_DIR / "mobileinsight.png"
+        if icon_path.exists():
+            app.setWindowIcon(QIcon(str(icon_path)))
+    except Exception:
+        # Silently ignore icon errors
+        pass
+
     window = WindowClass()
+    # Ensure main window also uses the same icon
+    try:
+        window.setWindowIcon(app.windowIcon())
+    except Exception:
+        pass
+
     sys.exit(app.exec())
 
 

@@ -119,7 +119,7 @@ else:
 
 setup(
     name='MobileInsight',
-    version='6.0.0',
+    version='6.1.0-beta',
     description='Mobile network monitoring and analysis',
     author='MobileInsight team',
     author_email='support@mobileinsight.net',
