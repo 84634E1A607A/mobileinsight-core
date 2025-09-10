@@ -46,7 +46,7 @@ class ResultEvent:
 
 
 class ProgressDialog(QDialog):
-    def __init__(self, parent):
+    def __init__(self, parent: Optional[QWidget] = None) -> None:
         super().__init__(parent)
         self.setWindowFlags(Qt.WindowType.FramelessWindowHint)
         layout = QVBoxLayout()
@@ -57,11 +57,16 @@ class ProgressDialog(QDialog):
         
         # Try to load a GIF if available
         try:
-            movie = QMovie("icons/loading.gif")
-            if movie.isValid():
-                self.label.setMovie(movie)
-                movie.start()
-        except:
+            loading_gif_path = ICONS_DIR / "loading.gif"
+            if loading_gif_path.exists():
+                movie = QMovie(str(loading_gif_path))
+                if movie.isValid():
+                    self.label.setMovie(movie)
+                    movie.start()
+            else:
+                # Fallback to text
+                self.label.setText("Loading...")
+        except Exception:
             # Fallback to text
             self.label.setText("Loading...")
         
@@ -71,7 +76,7 @@ class ProgressDialog(QDialog):
 
 
 class TimeWindowDialog(QDialog):
-    def __init__(self, parent, start_time, end_time):
+    def __init__(self, parent: Optional[QWidget], start_time: datetime, end_time: datetime) -> None:
         super().__init__(parent)
         self.setWindowTitle("Time Window")
         
@@ -118,10 +123,10 @@ class TimeWindowDialog(QDialog):
         end_layout.addWidget(self.end_slider)
         self.end_slider.valueChanged.connect(self.end_slider_update)
         
-        self.start_time = start_time
-        self.cur_end = end_time
-        self.cur_start = self.start_time
-        self.unit_seconds = (end_time - start_time).total_seconds() / 100.0
+        self.start_time: datetime = start_time
+        self.cur_end: datetime = end_time
+        self.cur_start: datetime = self.start_time
+        self.unit_seconds: float = (end_time - start_time).total_seconds() / 100.0
         
         self.updateUI()
         
@@ -132,25 +137,28 @@ class TimeWindowDialog(QDialog):
         
         self.setLayout(layout)
         
-    def start_slider_update(self, value):
+    def start_slider_update(self, value: int) -> None:
         delta_seconds = value * self.unit_seconds
         self.cur_start = self.start_time + timedelta(seconds=int(delta_seconds))
         self.updateUI()
         
-    def end_slider_update(self, value):
+    def end_slider_update(self, value: int) -> None:
         delta_seconds = value * self.unit_seconds
         self.cur_end = self.start_time + timedelta(seconds=int(delta_seconds))
         self.updateUI()
         
-    def updateUI(self):
+    def updateUI(self) -> None:
         self.start_label.setText(str(self.cur_start))
         self.end_label.setText(str(self.cur_end))
 
 
 class MyMCD(QDialog):
-    def __init__(self, parent, message, caption, choices=[]):
+    def __init__(self, parent: Optional[QWidget], message: str, caption: str, choices: Optional[List[str]] = None) -> None:
         super().__init__(parent)
         self.setWindowTitle(caption)
+        
+        if choices is None:
+            choices = []
         
         layout = QVBoxLayout()
         
@@ -179,7 +187,7 @@ class MyMCD(QDialog):
         self.setLayout(layout)
         self.resize(400, 300)
         
-    def GetSelections(self):
+    def GetSelections(self) -> List[int]:
         selections = []
         for i in range(self.list_widget.count()):
             item = self.list_widget.item(i)
@@ -187,7 +195,7 @@ class MyMCD(QDialog):
                 selections.append(i)
         return selections
         
-    def toggle_all(self, state):
+    def toggle_all(self, state: int) -> None:
         check_state = Qt.CheckState.Checked if state == 2 else Qt.CheckState.Unchecked
         for i in range(self.list_widget.count()):
             item = self.list_widget.item(i)
@@ -197,16 +205,20 @@ class MyMCD(QDialog):
 
 class WindowClass(QMainWindow):
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
 
-        self.min_time = datetime.strptime("3000 Jan 1", '%Y %b %d')
-        self.max_time = datetime.strptime("1900 Jan 1", '%Y %b %d')
-        self.selectedTypes = None  # Message Filters
-        self.progressDialog = None
+        self.min_time: datetime = datetime.strptime("3000 Jan 1", '%Y %b %d')
+        self.max_time: datetime = datetime.strptime("1900 Jan 1", '%Y %b %d')
+        self.selectedTypes: Optional[List[str]] = None  # Message Filters
+        self.progressDialog: Optional[ProgressDialog] = None
+        self.data: Optional[List[Dict[str, Any]]] = None
+        self.data_view: Optional[List[Dict[str, Any]]] = None
+        self.pending_result: Optional[ResultEvent] = None
+        self.content: Dict[str, Any] = {}
         self.basicGUI()
 
-    def basicGUI(self):
+    def basicGUI(self) -> None:
 
         self._log_analyzer = LogAnalyzer(self.OnReadComplete)
         
@@ -233,43 +245,47 @@ class WindowClass(QMainWindow):
         self.addToolBar(self.toolbar)
 
         # Helper function to create icons
-        def create_icon(path):
+        def create_icon(icon_name: str) -> QIcon:
             try:
-                return QIcon(path)
-            except:
+                icon_path = ICONS_DIR / icon_name
+                if icon_path.exists():
+                    return QIcon(str(icon_path))
+                else:
+                    return QIcon()  # Empty icon as fallback
+            except Exception:
                 return QIcon()  # Empty icon as fallback
 
-        open_action = QAction(create_icon("/usr/local/share/mobileinsight/icons/open.png"), "Open", self)
+        open_action = QAction(create_icon("open.png"), "Open", self)
         open_action.triggered.connect(self.Open)
         self.toolbar.addAction(open_action)
         
         self.toolbar.addSeparator()
         
-        filter_action = QAction(create_icon("/usr/local/share/mobileinsight/icons/filter.png"), "Filter", self)
+        filter_action = QAction(create_icon("filter.png"), "Filter", self)
         filter_action.triggered.connect(self.OnFilter)
         self.toolbar.addAction(filter_action)
         
         self.toolbar.addSeparator()
         
-        search_action = QAction(create_icon("/usr/local/share/mobileinsight/icons/search.png"), "Search", self)
+        search_action = QAction(create_icon("search.png"), "Search", self)
         search_action.triggered.connect(self.OnSearch)
         self.toolbar.addAction(search_action)
         
         self.toolbar.addSeparator()
         
-        time_action = QAction(create_icon("/usr/local/share/mobileinsight/icons/time.png"), "Time Window", self)
+        time_action = QAction(create_icon("time.png"), "Time Window", self)
         time_action.triggered.connect(self.OnTime)
         self.toolbar.addAction(time_action)
         
         self.toolbar.addSeparator()
         
-        reset_action = QAction(create_icon("/usr/local/share/mobileinsight/icons/reset.png"), "Reset", self)
+        reset_action = QAction(create_icon("reset.png"), "Reset", self)
         reset_action.triggered.connect(self.OnReset)
         self.toolbar.addAction(reset_action)
         
         self.toolbar.addSeparator()
         
-        about_action = QAction(create_icon("/usr/local/share/mobileinsight/icons/about.png"), "About", self)
+        about_action = QAction(create_icon("about.png"), "About", self)
         about_action.triggered.connect(self.OnAbout)
         self.toolbar.addAction(about_action)
 
@@ -333,24 +349,29 @@ class WindowClass(QMainWindow):
         self.result_timer.start(100)  # Check every 100ms
         self.pending_result = None
 
-    def check_results(self):
+    def check_results(self) -> None:
         if self.pending_result is not None:
             self.OnResult(self.pending_result)
             self.pending_result = None
 
-    def OnResult(self, event):
+    def OnResult(self, event: Union[ResultEvent, List[Dict[str, Any]]]) -> None:
         if self.progressDialog:
             self.progressDialog.close()
             self.progressDialog = None
 
-        data = event.data if hasattr(event, 'data') else event
+        data: List[Dict[str, Any]]
+        if isinstance(event, ResultEvent):
+            data = event.data
+        else:
+            data = event
+            
         if data:
             self.statusbar.showMessage(f"Read {len(data)} logs")
             self.data = data
             self.data_view = self.data
             self.SetupGrid()
 
-    def Open(self):
+    def Open(self) -> None:
         file_dialog = QFileDialog()
         file_paths, _ = file_dialog.getOpenFileNames(
             self,
@@ -377,7 +398,7 @@ class WindowClass(QMainWindow):
             except Exception as e:
                 print(f"Error while opening file: {e}")
 
-    def OnFilter(self):
+    def OnFilter(self) -> None:
         types = list(self._log_analyzer.supported_types)
         checkboxDialog = MyMCD(self, "Filter", "", types)
         if checkboxDialog.exec() == QDialog.DialogCode.Accepted:
@@ -387,34 +408,35 @@ class WindowClass(QMainWindow):
                 self.data_view = [x for x in self.data if x["TypeID"] in self.selectedTypes]
                 self.SetupGrid()
 
-    def OnTime(self):
+    def OnTime(self) -> None:
         timewindowDialog = TimeWindowDialog(self, self.min_time, self.max_time)
         if timewindowDialog.exec() == QDialog.DialogCode.Accepted:
             select_start = timewindowDialog.cur_start
             select_end = timewindowDialog.cur_end
-            self.data_view = [
-                x for x in self.data_view if datetime.strptime(
-                    x["Timestamp"],
-                    '%Y-%m-%d  %H:%M:%S.%f') >= select_start and datetime.strptime(
-                    x["Timestamp"],
-                    '%Y-%m-%d  %H:%M:%S.%f') <= select_end]
-            self.SetupGrid()
+            if self.data_view is not None:
+                self.data_view = [
+                    x for x in self.data_view if datetime.strptime(
+                        x["Timestamp"],
+                        '%Y-%m-%d  %H:%M:%S.%f') >= select_start and datetime.strptime(
+                        x["Timestamp"],
+                        '%Y-%m-%d  %H:%M:%S.%f') <= select_end]
+                self.SetupGrid()
 
-    def OnReset(self):
+    def OnReset(self) -> None:
         if self.data:
             self.data_view = self.data
             self.SetupGrid()
 
-    def openFile(self, Paths, selectedTypes):
+    def openFile(self, Paths: List[str], selectedTypes: Optional[List[str]]) -> None:
         self._log_analyzer.AnalyzeFile(Paths, selectedTypes)
 
-    def OnSearch(self):
+    def OnSearch(self) -> None:
         text, ok = QInputDialog.getText(self, "Search", "Search for:")
-        if ok and text:
+        if ok and text and self.data_view is not None:
             self.data_view = [x for x in self.data_view if text in x["Payload"]]
             self.SetupGrid()
 
-    def OnAbout(self):
+    def OnAbout(self) -> None:
         about_text = (
                 'MobileInsight GUI\n\n\n' +
                 'Copyright (c) 2014-2016 MobileInsight Team\n\n' +
@@ -424,8 +446,8 @@ class WindowClass(QMainWindow):
                 '    Yuanjie Li')
         QMessageBox.information(self, "About MobileInsight GUI", about_text)
 
-    def OnGridSelect(self, row, column):
-        if row < len(self.data_view):
+    def OnGridSelect(self, row: int, column: int) -> None:
+        if self.data_view is not None and row < len(self.data_view):
             self.status_text.setText(
                 f"Time Stamp : {self.data_view[row]['Timestamp']}    Type : {self.data_view[row]['TypeID']}")
             
@@ -434,18 +456,19 @@ class WindowClass(QMainWindow):
             print(r.tag)
             for child in r:
                 k = child.get("key")
-                if child.get("type")=="list" and len(child)==0:
-                    self.content[k]={}
-                elif child.get("type") == "list" and child[0].tag == "list":
-                    list_content = self.parse_list(child, k)
-                    self.content[k] = list_content
-                elif child.get("type") == "list" and child[0].tag == "msg":  # xml from wireshark
-                    list_content = self.parse_msg(child)
-                    self.content[k] = list_content
-                elif child.get("type")=="dict":
-                    self.content[k]=self.parse_dict(child)
-                else:
-                    self.content[k] = child.text
+                if k is not None:
+                    if child.get("type")=="list" and len(child)==0:
+                        self.content[k]={}
+                    elif child.get("type") == "list" and child[0].tag == "list":
+                        list_content = self.parse_list(child, k)
+                        self.content[k] = list_content
+                    elif child.get("type") == "list" and child[0].tag == "msg":  # xml from wireshark
+                        list_content = self.parse_msg(child)
+                        self.content[k] = list_content
+                    elif child.get("type")=="dict":
+                        self.content[k]=self.parse_dict(child)
+                    else:
+                        self.content[k] = child.text
                     
             self.details_text.clear()
             root = QTreeWidgetItem(self.details_text)
@@ -453,70 +476,73 @@ class WindowClass(QMainWindow):
             self.create_tree(self.content, root)
             self.details_text.expandAll()
 
-    def parse_list(self, listroot, attrib_key):
+    def parse_list(self, listroot: ET.Element, attrib_key: str) -> Optional[Dict[str, Any]]:
         '''
         convert list from .xml to standard dict
-        :param listroot:
-        :param attrib_key:
-        :return: dict
+        :param listroot: XML element containing the list
+        :param attrib_key: attribute key name
+        :return: dict or None
         '''
-        list_content = {}
-        if(len(listroot)==0):
+        list_content: Dict[str, Any] = {}
+        if len(listroot) == 0:
             return None
-        listroot = listroot[0];  # <pair key="CA Combos" type="list">   <list>
+        listroot = listroot[0]  # <pair key="CA Combos" type="list">   <list>
         i = 0
         for xml_list in listroot:
             if xml_list.tag == "item" and xml_list.get("type") == "dict":  # The only subclass of list is dict
                 dist_content = self.parse_dict(xml_list)
-                if(xml_list.get("key")==None):
+                key = xml_list.get("key")
+                if key is None:
                     list_content[attrib_key + "[" + str(i) + "]"] = dist_content 
                     i += 1
                 else:
-                    list_content[xml_list.get("key")]=dist_content 
+                    list_content[key] = dist_content 
         return list_content
 
-    def parse_dict(self, dictroot):
+    def parse_dict(self, dictroot: ET.Element) -> Dict[str, Any]:
         '''
         convert dict from .xml to standard dict
-        :param dictroot:
-        :return:
+        :param dictroot: XML element containing the dict
+        :return: dict
         '''
         dictroot = dictroot[0]  # <item type="dict">  <dict>
-        dict_content = {}
+        dict_content: Dict[str, Any] = {}
         for d in dictroot:
             k = d.get("key")
-            if (d.get("type") == "list"):  # list in dist
-                list_content = self.parse_list(d, k)
-                dict_content[k] = list_content
-            elif (d.get("type")=="dict"):
-                list_content = self.parse_dict(d)
-                dict_content[k] = list_content
-            else:
-                dict_content[k] = d.text;  # key-value
+            if k is not None:
+                if d.get("type") == "list":  # list in dict
+                    list_content = self.parse_list(d, k)
+                    dict_content[k] = list_content
+                elif d.get("type") == "dict":
+                    nested_dict_content = self.parse_dict(d)
+                    dict_content[k] = nested_dict_content
+                else:
+                    dict_content[k] = d.text  # key-value
         return dict_content
 
-    def split_key_value(self,str):
+    def split_key_value(self, input_str: str) -> tuple[str, str]:
         '''
         e.g. "a:b"->"a","b"
-        :param str:
-        :return:
+        :param input_str: string to split
+        :return: tuple of key and value
         '''
-        start=str.find(":")
-        if(start!=-1):
-            key=str[0:start]
-            val=str[start+1:]
-            return key ,val
+        start = input_str.find(":")
+        if start != -1:
+            key = input_str[0:start]
+            val = input_str[start+1:]
+            return key, val
         else:
-            return str,"none"
-    def parse_msg(self, msgroot):
+            return input_str, "none"
+            
+    def parse_msg(self, msgroot: ET.Element) -> Dict[str, Any]:
         '''
         parse xml file which is conveyed by wireshark
-        :param msgroot:
-        :return:
+        :param msgroot: XML element containing the message
+        :return: dict
         '''
         proto = msgroot.findall(".//proto")
-        dict_msg = {}
-        skip_context=["geninfo","frame","user_dlt"]#proto which is useless
+        dict_msg: Dict[str, Any] = {}
+        skip_context = ["geninfo", "frame", "user_dlt"]  # proto which is useless
         for p in proto:
             if (p.get("hide") != "yes" and p.get("name") not in skip_context):
                 dict_msg.update(self.parse_msg_field(p))
@@ -524,30 +550,30 @@ class WindowClass(QMainWindow):
                 continue
         return dict_msg
 
-    def parse_msg_field(self, msgroot):
-        msg_dict={}
-        #skip_context=["geninfo","frame","user_dlt"]
+    def parse_msg_field(self, msgroot: ET.Element) -> Dict[str, Any]:
+        msg_dict: Dict[str, Any] = {}
         for field in msgroot:
-            if (field.get("hide") == "yes"):
+            if field.get("hide") == "yes":
                 continue
-            elif len(field) != 0 and field.get("showname")!=None:
-                k=field.get("showname")
-                k,_=self.split_key_value(k)
-                val_dict = self.parse_msg_field(field)
-                if len(val_dict)==0:
-                    msg_dict[k]="skip"
-                else:
-                    msg_dict[k]=val_dict
-            elif len(field)!=0:
+            elif len(field) != 0 and field.get("showname") is not None:
+                k = field.get("showname")
+                if k is not None:
+                    k, _ = self.split_key_value(k)
+                    val_dict = self.parse_msg_field(field)
+                    if len(val_dict) == 0:
+                        msg_dict[k] = "skip"
+                    else:
+                        msg_dict[k] = val_dict
+            elif len(field) != 0:
                 msg_dict.update(self.parse_msg_field(field))
             else:
                 dict_msg = field.get("showname")
-                if dict_msg !=None:
+                if dict_msg is not None:
                     k, v = self.split_key_value(dict_msg)
                     msg_dict[k] = v
         return msg_dict
 
-    def create_tree(self, payload_dict, root):
+    def create_tree(self, payload_dict: Dict[str, Any], root: QTreeWidgetItem) -> None:
         for k, v in payload_dict.items():
             if isinstance(v, dict):
                 subroot = QTreeWidgetItem(root)
@@ -561,15 +587,18 @@ class WindowClass(QMainWindow):
                     item = QTreeWidgetItem(root)
                     item.setText(0, str(k))
 
-    def closeEvent(self, a0):
+    def closeEvent(self, a0) -> None:
         if a0:
             a0.accept()
 
-    def OnReadComplete(self):
+    def OnReadComplete(self) -> None:
         # Instead of using wx events, we'll use a simple variable
         self.pending_result = ResultEvent(self._log_analyzer.msg_logs)
 
-    def SetupGrid(self):
+    def SetupGrid(self) -> None:
+        if self.data_view is None:
+            return
+            
         self.min_time = datetime.strptime("3000 Jan 1", '%Y %b %d')
         self.max_time = datetime.strptime("1900 Jan 1", '%Y %b %d')
 
@@ -605,10 +634,11 @@ class WindowClass(QMainWindow):
             self.grid.setItem(i, 1, typeid_item)
 
 
-def main():
+def main() -> None:
     app = QApplication(sys.argv)
     window = WindowClass()
     sys.exit(app.exec())
 
 
-main()
+if __name__ == "__main__":
+    main()

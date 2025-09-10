@@ -156,6 +156,7 @@ examples/logs/offline_log_examples/20201116_201521_Xiaomi-Mi10_46000.mi2log
 examples/logs/offline_log_examples/20201116_202016_Xiaomi-Mi10_46000.mi2log
 gui/mi-gui
 gui/mobile_insight_gui.py
+gui/__pycache__/mobile_insight_gui.cpython-313.pyc
 gui/icons/about.png
 gui/icons/filter.png
 gui/icons/graph.png

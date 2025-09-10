@@ -64,7 +64,10 @@ class OfflineReplayer(Monitor):
                     "android_pie_ws_dissector"),
                 "libwireshark_path": libs_path}
         else:
-            prefs = {}
+            prefs = {
+                "ws_dissect_executable_path": "/home/ajax/source/starlink/mi/ws-bin/bin/ws_dissector",
+                "libwireshark_path": "/home/ajax/source/starlink/mi/ws-bin/lib/"
+            }
 
         DMLogPacket.init(prefs)
 
