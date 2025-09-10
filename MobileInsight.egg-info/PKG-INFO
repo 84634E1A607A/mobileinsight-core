@@ -1,0 +1,15 @@
+Metadata-Version: 2.4
+Name: MobileInsight
+Version: 6.0.0
+Summary: Mobile network monitoring and analysis
+Home-page: http://www.mobileinsight.net
+Author: MobileInsight team
+Author-email: support@mobileinsight.net
+License: Apache License 2.0
+License-File: LICENSE
+Dynamic: author
+Dynamic: author-email
+Dynamic: home-page
+Dynamic: license
+Dynamic: license-file
+Dynamic: summary

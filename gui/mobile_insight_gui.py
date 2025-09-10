@@ -4,330 +4,392 @@
 Python GUI for MobileInsight
 Author: Moustafa Alzantot
 Date : Feb 26, 2016
+Converted to PyQt6 by Assistant
 """
 
 import sys
-import wx
-import wx.grid
-import wx.adv
+import os
+from pathlib import Path
 from threading import Thread
 from random import random
 from datetime import datetime, timedelta
+from typing import List, Dict, Any, Optional, Union
 
 import matplotlib
-from matplotlib.backends.backend_wxagg import FigureCanvasWxAgg as FigureCanvas
-# from matplotlib.backends.backend_wx import NavigationToolbar2Wx, wxc
-from matplotlib.backends.backend_wx import NavigationToolbar2Wx
+from matplotlib.backends.backend_qtagg import FigureCanvasQTAgg as FigureCanvas
+from matplotlib.backends.backend_qt import NavigationToolbar2QT as NavigationToolbar
 from matplotlib.figure import Figure
 
 import xml.dom.minidom
 import xml.etree.ElementTree as ET
 
+from PyQt6.QtWidgets import (QApplication, QMainWindow, QVBoxLayout, QHBoxLayout, 
+                             QWidget, QPushButton, QTableWidget, QTableWidgetItem, 
+                             QTreeWidget, QTreeWidgetItem, QLabel, QSlider, QDialog, 
+                             QDialogButtonBox, QFileDialog, QMessageBox, QInputDialog,
+                             QCheckBox, QListWidget, QListWidgetItem, QProgressDialog, QToolBar, 
+                             QStatusBar, QMenuBar, QSplitter, QTextEdit, QFrame)
+from PyQt6.QtCore import Qt, QThread, pyqtSignal, QTimer, QSize, QEvent
+from PyQt6.QtGui import QAction, QIcon, QPixmap, QFont, QMovie, QCloseEvent
+
 from mobile_insight.analyzer import LogAnalyzer
 from mobile_insight.monitor.dm_collector.dm_endec.dm_log_packet import DMLogPacket
 
-ID_FILE_OPEN = wx.NewId()
-ID_FILE_EXIT = wx.NewId()
-ID_TB_OPEN = wx.NewId()
-ID_TB_FILTER = wx.NewId()
-ID_TB_SEARCH = wx.NewId()
-ID_TB_TIME = wx.NewId()
-ID_TB_RESET = wx.NewId()
-ID_TB_GRAPH = wx.NewId()
-EVT_RESULT_ID = wx.NewId()
+# Get the directory containing this script for relative resource paths
+GUI_DIR = Path(__file__).parent
+ICONS_DIR = GUI_DIR / "icons"
 
 
-def EVT_RESULT(win, func):
-    win.Connect(-1, -1, EVT_RESULT_ID, func)
-
-
-class ResultEvent(wx.PyEvent):
-    def __init__(self, data):
-        wx.PyEvent.__init__(self)
-        self.SetEventType(EVT_RESULT_ID)
+class ResultEvent:
+    def __init__(self, data: List[Dict[str, Any]]) -> None:
         self.data = data
 
 
-class ProgressDialog(wx.Dialog):
+class ProgressDialog(QDialog):
     def __init__(self, parent):
-        wx.Dialog.__init__(self, parent, -1, style=wx.NO_BORDER)
-        mainSizer = wx.BoxSizer(wx.VERTICAL)
-        anim = wx.adv.Animation("icons/loading.gif")
-        gif = wx.adv.AnimationCtrl(self, -1, anim, size=(-1, -1))
-        # gif = wx.adv.AnimationCtrl(self, pos=(0, 0), size=(-1, -1))
-        gif.Play()
+        super().__init__(parent)
+        self.setWindowFlags(Qt.WindowType.FramelessWindowHint)
+        layout = QVBoxLayout()
+        
+        # Create a loading animation - using a simple label for now
+        self.label = QLabel("Loading...")
+        self.label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        
+        # Try to load a GIF if available
+        try:
+            movie = QMovie("icons/loading.gif")
+            if movie.isValid():
+                self.label.setMovie(movie)
+                movie.start()
+        except:
+            # Fallback to text
+            self.label.setText("Loading...")
+        
+        layout.addWidget(self.label)
+        self.setLayout(layout)
+        self.resize(200, 100)
 
-        mainSizer.Add(gif, wx.EXPAND | wx.ALL)
-        self.SetSizer(mainSizer)
-        self.Fit()
 
-
-class TimeWindowDialog(wx.Dialog):
+class TimeWindowDialog(QDialog):
     def __init__(self, parent, start_time, end_time):
-        wx.Dialog.__init__(self, parent, -1)
-        sizer = wx.BoxSizer(wx.VERTICAL)
-        self.SetTitle("Time Window")
-        self.start_label = wx.StaticText(self, -1, label="...", style=wx.BOLD)
-        self.end_label = wx.StaticText(self, -1, label="...", style=wx.BOLD)
-        self.window_label = wx.StaticText(self, -1, "\t to \t")
-        # self.start_label.SetFont(wx.Font(11, wx.DEFAULT, wx.BOLD, wx.NORMAL))
-        # self.window_label.SetFont(wx.Font(11, wx.DEFAULT, wx.ITALIC, wx.NORMAL))
-        # self.end_label.SetFont(wx.Font(11, wx.DEFAULT, wx.BOLD, wx.NORMAL))
-
-        self.start_label.SetFont(wx.Font(11, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_SLANT, wx.FONTWEIGHT_NORMAL))
-        self.window_label.SetFont(wx.Font(11, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_ITALIC, wx.FONTWEIGHT_NORMAL))
-        self.end_label.SetFont(wx.Font(11, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_SLANT, wx.FONTWEIGHT_NORMAL))
-
-        labelSizer = wx.BoxSizer(wx.HORIZONTAL)
-        labelSizer.Add(self.start_label, 0, wx.ALL | wx.EXPAND, 3)
-        labelSizer.Add(self.window_label, wx.ALL, 1)
-        labelSizer.Add(self.end_label, 0, wx.ALL | wx.EXPAND, 3)
-
-        self.btns = self.CreateSeparatedButtonSizer(wx.OK | wx.CANCEL)
-        start_sizer = wx.BoxSizer(wx.HORIZONTAL)
-        start_sizer.Add(wx.StaticText(self, -1, "Start: "), 0, wx.ALL, 1)
-        self.start_slider = wx.Slider(
-            self, -1, 0, 0, 100, wx.DefaultPosition, (250, -1), wx.SL_HORIZONTAL)
-        start_sizer.Add(self.start_slider, 0, wx.ALL | wx.EXPAND, 5)
-        self.Bind(wx.EVT_SLIDER, self.start_slider_update, self.start_slider)
-
-        end_sizer = wx.BoxSizer(wx.HORIZONTAL)
-        end_sizer.Add(wx.StaticText(self, -1, "End: "), 0, wx.ALL, 1)
-        self.end_slider = wx.Slider(
-            self, -1, 100, 0, 100, wx.DefaultPosition, (250, -1), wx.SL_HORIZONTAL)
-        end_sizer.Add(self.end_slider, 0, wx.ALL | wx.EXPAND, 5)
-        self.Bind(wx.EVT_SLIDER, self.end_slider_udpate, self.end_slider)
-
+        super().__init__(parent)
+        self.setWindowTitle("Time Window")
+        
+        layout = QVBoxLayout()
+        
+        self.start_label = QLabel("...")
+        self.end_label = QLabel("...")
+        self.window_label = QLabel("\t to \t")
+        
+        font = QFont()
+        font.setBold(True)
+        self.start_label.setFont(font)
+        self.end_label.setFont(font)
+        
+        font_italic = QFont()
+        font_italic.setItalic(True)
+        self.window_label.setFont(font_italic)
+        
+        label_layout = QHBoxLayout()
+        label_layout.addWidget(self.start_label)
+        label_layout.addWidget(self.window_label)
+        label_layout.addWidget(self.end_label)
+        
+        button_box = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok | 
+                                     QDialogButtonBox.StandardButton.Cancel)
+        button_box.accepted.connect(self.accept)
+        button_box.rejected.connect(self.reject)
+        
+        start_layout = QHBoxLayout()
+        start_layout.addWidget(QLabel("Start: "))
+        self.start_slider = QSlider(Qt.Orientation.Horizontal)
+        self.start_slider.setRange(0, 100)
+        self.start_slider.setValue(0)
+        self.start_slider.setMinimumWidth(250)
+        start_layout.addWidget(self.start_slider)
+        self.start_slider.valueChanged.connect(self.start_slider_update)
+        
+        end_layout = QHBoxLayout()
+        end_layout.addWidget(QLabel("End: "))
+        self.end_slider = QSlider(Qt.Orientation.Horizontal)
+        self.end_slider.setRange(0, 100)
+        self.end_slider.setValue(100)
+        self.end_slider.setMinimumWidth(250)
+        end_layout.addWidget(self.end_slider)
+        self.end_slider.valueChanged.connect(self.end_slider_update)
+        
         self.start_time = start_time
         self.cur_end = end_time
         self.cur_start = self.start_time
         self.unit_seconds = (end_time - start_time).total_seconds() / 100.0
-
+        
         self.updateUI()
-        sizer.Add(labelSizer, 0, wx.ALL | wx.EXPAND, 5)
-        sizer.Add(start_sizer, 0, wx.ALL | wx.EXPAND, 5)
-        sizer.Add(end_sizer, 0, wx.ALL | wx.EXPAND, 5)
-        sizer.Add(self.btns, 0, wx.ALL | wx.EXPAND, 5)
-        self.SetSizer(sizer)
-        self.Fit()
-
-    def start_slider_update(self, event):
-        delta_seconds = self.start_slider.GetValue() * self.unit_seconds
-        self.cur_start = self.start_time + \
-                         timedelta(seconds=int(delta_seconds))
+        
+        layout.addLayout(label_layout)
+        layout.addLayout(start_layout)
+        layout.addLayout(end_layout)
+        layout.addWidget(button_box)
+        
+        self.setLayout(layout)
+        
+    def start_slider_update(self, value):
+        delta_seconds = value * self.unit_seconds
+        self.cur_start = self.start_time + timedelta(seconds=int(delta_seconds))
         self.updateUI()
-
-    def end_slider_udpate(self, event):
-        delta_seconds = self.end_slider.GetValue() * self.unit_seconds
+        
+    def end_slider_update(self, value):
+        delta_seconds = value * self.unit_seconds
         self.cur_end = self.start_time + timedelta(seconds=int(delta_seconds))
         self.updateUI()
-
+        
     def updateUI(self):
-        self.start_label.SetLabel(format("%s" % (self.cur_start)))
-        self.end_label.SetLabel(format("%s" % (self.cur_end)))
+        self.start_label.setText(str(self.cur_start))
+        self.end_label.setText(str(self.cur_end))
 
 
-class MyMCD(wx.Dialog):
+class MyMCD(QDialog):
     def __init__(self, parent, message, caption, choices=[]):
-        wx.Dialog.__init__(self, parent, -1)
-        self.SetTitle(caption)
-        sizer = wx.BoxSizer(wx.VERTICAL)
-        self.message = wx.StaticText(self, -1, message)
-        self.clb = wx.CheckListBox(self, -1, choices=choices)
-        self.chbox = wx.CheckBox(self, -1, 'Select all')
-        self.btns = self.CreateSeparatedButtonSizer(wx.OK | wx.CANCEL)
-        self.Bind(wx.EVT_CHECKBOX, self.EvtChBox, self.chbox)
-
-        sizer.Add(self.message, 0, wx.ALL | wx.EXPAND, 5)
-        sizer.Add(self.clb, 1, wx.ALL | wx.EXPAND, 5)
-        sizer.Add(self.chbox, 0, wx.ALL | wx.EXPAND, 5)
-        sizer.Add(self.btns, 0, wx.ALL | wx.EXPAND, 5)
-        self.SetSizer(sizer)
-        # self.Fit()
-
+        super().__init__(parent)
+        self.setWindowTitle(caption)
+        
+        layout = QVBoxLayout()
+        
+        self.message_label = QLabel(message)
+        self.list_widget = QListWidget()
+        
+        for choice in choices:
+            item = QListWidgetItem(choice)
+            item.setFlags(item.flags() | Qt.ItemFlag.ItemIsUserCheckable)
+            item.setCheckState(Qt.CheckState.Unchecked)
+            self.list_widget.addItem(item)
+        
+        self.select_all_checkbox = QCheckBox('Select all')
+        self.select_all_checkbox.stateChanged.connect(self.toggle_all)
+        
+        button_box = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok | 
+                                     QDialogButtonBox.StandardButton.Cancel)
+        button_box.accepted.connect(self.accept)
+        button_box.rejected.connect(self.reject)
+        
+        layout.addWidget(self.message_label)
+        layout.addWidget(self.list_widget)
+        layout.addWidget(self.select_all_checkbox)
+        layout.addWidget(button_box)
+        
+        self.setLayout(layout)
+        self.resize(400, 300)
+        
     def GetSelections(self):
-        return self.clb.GetChecked()
+        selections = []
+        for i in range(self.list_widget.count()):
+            item = self.list_widget.item(i)
+            if item and item.checkState() == Qt.CheckState.Checked:
+                selections.append(i)
+        return selections
+        
+    def toggle_all(self, state):
+        check_state = Qt.CheckState.Checked if state == 2 else Qt.CheckState.Unchecked
+        for i in range(self.list_widget.count()):
+            item = self.list_widget.item(i)
+            if item:
+                item.setCheckState(check_state)
 
-    def EvtChBox(self, event):
-        state = self.chbox.IsChecked()
-        for i in range(self.clb.GetCount()):
-            self.clb.Check(i, state)
 
-
-class WindowClass(wx.Frame):
+class WindowClass(QMainWindow):
 
     def __init__(self, *args, **kwargs):
-        super(WindowClass, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
         self.min_time = datetime.strptime("3000 Jan 1", '%Y %b %d')
         self.max_time = datetime.strptime("1900 Jan 1", '%Y %b %d')
         self.selectedTypes = None  # Message Filters
+        self.progressDialog = None
         self.basicGUI()
 
     def basicGUI(self):
 
         self._log_analyzer = LogAnalyzer(self.OnReadComplete)
-        menuBar = wx.MenuBar()
-        fileButton = wx.Menu()
-        editButton = wx.Menu()
+        
+        # Menu Bar
+        menubar = self.menuBar()
+        if menubar:
+            file_menu = menubar.addMenu('File')
+            edit_menu = menubar.addMenu('Edit')
 
-        openItem = fileButton.Append(ID_FILE_OPEN, "Open", "Open log file")
-        exitItem = fileButton.Append(ID_FILE_EXIT, "Exit", "Exit application")
+            open_action = QAction('Open', self)
+            open_action.setShortcut('Ctrl+O')
+            open_action.triggered.connect(self.Open)
+            if file_menu:
+                file_menu.addAction(open_action)
 
-        menuBar.Append(fileButton, 'File')
-        menuBar.Append(editButton, "Edit")
-        self.SetMenuBar(menuBar)
-
-        self.Bind(wx.EVT_MENU, self.Quit, exitItem)
-        self.Bind(wx.EVT_MENU, self.Open, openItem)
+            exit_action = QAction('Exit', self)
+            exit_action.setShortcut('Ctrl+Q')
+            exit_action.triggered.connect(self.close)
+            if file_menu:
+                file_menu.addAction(exit_action)
 
         # Toolbar
-        self.toolbar = self.CreateToolBar(
-            wx.TB_FLAT | wx.TB_TEXT | wx.TB_HORIZONTAL | wx.NO_BORDER)
+        self.toolbar = QToolBar()
+        self.addToolBar(self.toolbar)
 
-        toolbar_open = self.toolbar.AddLabelTool(
-            ID_TB_OPEN, "Open", wx.Bitmap("/usr/local/share/mobileinsight/icons/open.png"))
-        self.toolbar.AddSeparator()
-        toolbar_filter = self.toolbar.AddLabelTool(
-            ID_TB_FILTER, "Filter", wx.Bitmap("/usr/local/share/mobileinsight/icons/filter.png"))
-        self.toolbar.AddSeparator()
-        toolbar_search = self.toolbar.AddLabelTool(
-            ID_TB_SEARCH, "Search", wx.Bitmap("/usr/local/share/mobileinsight/icons/search.png"))
-        self.toolbar.AddSeparator()
-        toolbar_time = self.toolbar.AddLabelTool(
-            ID_TB_TIME, "Time Window", wx.Bitmap("/usr/local/share/mobileinsight/icons/time.png"))
-        self.toolbar.AddSeparator()
-        toolbar_reset = self.toolbar.AddLabelTool(
-            ID_TB_RESET, "Reset", wx.Bitmap("/usr/local/share/mobileinsight/icons/reset.png"))
-        # self.toolbar.AddSeparator()
-        # toolbar_graph = self.toolbar.AddLabelTool(ID_TB_GRAPH, "Graph", wx.Bitmap("/usr/local/share/mobileinsight/icons/graph.png"))
-        self.toolbar.AddSeparator()
-        toolbar_about = self.toolbar.AddLabelTool(
-            ID_TB_GRAPH, "About", wx.Bitmap("/usr/local/share/mobileinsight/icons/about.png"))
+        # Helper function to create icons
+        def create_icon(path):
+            try:
+                return QIcon(path)
+            except:
+                return QIcon()  # Empty icon as fallback
 
-        self.Bind(wx.EVT_TOOL, self.Open, toolbar_open)
-        self.Bind(wx.EVT_TOOL, self.OnFilter, toolbar_filter)
-        self.Bind(wx.EVT_TOOL, self.OnSearch, toolbar_search)
-        self.Bind(wx.EVT_TOOL, self.OnTime, toolbar_time)
-        self.Bind(wx.EVT_TOOL, self.OnReset, toolbar_reset)
-        # self.Bind(wx.EVT_TOOL, self.OnGraph, toolbar_graph)
-        self.Bind(wx.EVT_TOOL, self.OnAbout, toolbar_about)
-        self.toolbar.Realize()
+        open_action = QAction(create_icon("/usr/local/share/mobileinsight/icons/open.png"), "Open", self)
+        open_action.triggered.connect(self.Open)
+        self.toolbar.addAction(open_action)
+        
+        self.toolbar.addSeparator()
+        
+        filter_action = QAction(create_icon("/usr/local/share/mobileinsight/icons/filter.png"), "Filter", self)
+        filter_action.triggered.connect(self.OnFilter)
+        self.toolbar.addAction(filter_action)
+        
+        self.toolbar.addSeparator()
+        
+        search_action = QAction(create_icon("/usr/local/share/mobileinsight/icons/search.png"), "Search", self)
+        search_action.triggered.connect(self.OnSearch)
+        self.toolbar.addAction(search_action)
+        
+        self.toolbar.addSeparator()
+        
+        time_action = QAction(create_icon("/usr/local/share/mobileinsight/icons/time.png"), "Time Window", self)
+        time_action.triggered.connect(self.OnTime)
+        self.toolbar.addAction(time_action)
+        
+        self.toolbar.addSeparator()
+        
+        reset_action = QAction(create_icon("/usr/local/share/mobileinsight/icons/reset.png"), "Reset", self)
+        reset_action.triggered.connect(self.OnReset)
+        self.toolbar.addAction(reset_action)
+        
+        self.toolbar.addSeparator()
+        
+        about_action = QAction(create_icon("/usr/local/share/mobileinsight/icons/about.png"), "About", self)
+        about_action.triggered.connect(self.OnAbout)
+        self.toolbar.addAction(about_action)
 
         # Main Panel
-        panel = wx.Panel(self, -1, size=(-1, -1), style=wx.BORDER_RAISED)
-        mainSizer = wx.BoxSizer(wx.HORIZONTAL)
+        central_widget = QWidget()
+        self.setCentralWidget(central_widget)
+        
+        main_layout = QHBoxLayout()
+        central_widget.setLayout(main_layout)
 
-        hbox = wx.BoxSizer(wx.HORIZONTAL)
-        self.grid = wx.grid.Grid(self)
-        self.grid.CreateGrid(50, 2)
-        self.grid.SetSelectionMode(1)  # 1 is Select Row
-
-        self.grid.Bind(wx.grid.EVT_GRID_SELECT_CELL, self.OnGridSelect)
-        self.grid.SetColLabelValue(0, "Timestamp")
-        self.grid.SetColLabelValue(1, "Type ID")
-
-        hbox.Add(self.grid, 5, wx.EXPAND | wx.ALL, 10)
-
-        leftPanel = wx.Panel(self, -1, size=(-1, -1), style=wx.BORDER_RAISED)
-
-        leftbox = wx.BoxSizer(wx.VERTICAL)
-        self.status_text = wx.StaticText(
-            leftPanel,
-            label="Welcome to MobileInsight 6.0 beta!\n\nMobileInsight is a Python 3 package for mobile network monitoring and analysis on the end device.",
-            style=wx.ALIGN_LEFT)
-        #self.details_text = wx.TextCtrl(leftPanel, style=wx.ALIGN_LEFT | wx.TE_MULTILINE)
-        self.details_text = wx.TreeCtrl(leftPanel, style=wx.TR_DEFAULT_STYLE | wx.TR_LINES_AT_ROOT)
-
-        leftbox.Add(self.status_text, 1, wx.EXPAND | wx.HORIZONTAL)
-        leftbox.Add(self.details_text, 3, wx.EXPAND)
-
-        leftPanel.SetSizer(leftbox)
-        hbox.Add(leftPanel, 4, wx.EXPAND | wx.ALL, 10)
-        self.grid.SetColSize(0, 200)
-        self.grid.SetColSize(1, 300)
-        self.grid.ForceRefresh()
-
-        panel.SetSizer(hbox)
-
-        mainSizer.Add(panel, 1, wx.EXPAND, 0)
-        self.SetSizer(mainSizer)
-        self.statusbar = self.CreateStatusBar()
-        self.Bind(wx.EVT_CLOSE, self.Quit)
-        self.SetTitle("MobileInsight")
-        self.SetSize((1200, 800))
-        self.Centre()
-        self.Show(True)
+        # Create splitter for resizable panels
+        splitter = QSplitter(Qt.Orientation.Horizontal)
+        
+        # Grid (Table) for log entries
+        self.grid = QTableWidget()
+        self.grid.setColumnCount(2)
+        self.grid.setHorizontalHeaderLabels(["Timestamp", "Type ID"])
+        self.grid.setSelectionBehavior(QTableWidget.SelectionBehavior.SelectRows)
+        self.grid.cellClicked.connect(self.OnGridSelect)
+        
+        # Left panel for details
+        left_panel = QWidget()
+        left_layout = QVBoxLayout()
+        left_panel.setLayout(left_layout)
+        
+        self.status_text = QLabel(
+            "Welcome to MobileInsight 6.0 beta!\n\nMobileInsight is a Python 3 package for mobile network monitoring and analysis on the end device.")
+        self.status_text.setWordWrap(True)
+        
+        self.details_text = QTreeWidget()
+        self.details_text.setHeaderLabel("Details")
+        
+        left_layout.addWidget(self.status_text, 1)
+        left_layout.addWidget(self.details_text, 3)
+        
+        # Add widgets to splitter
+        splitter.addWidget(self.grid)
+        splitter.addWidget(left_panel)
+        splitter.setSizes([600, 400])  # Initial sizes
+        
+        main_layout.addWidget(splitter)
+        
+        # Set column widths
+        self.grid.setColumnWidth(0, 200)
+        self.grid.setColumnWidth(1, 300)
+        
+        # Status bar
+        self.statusbar = QStatusBar()
+        self.setStatusBar(self.statusbar)
+        
+        # Window properties
+        self.setWindowTitle("MobileInsight")
+        self.resize(1200, 800)
+        self.show()
 
         self.data = None
 
-        EVT_RESULT(self, self.OnResult)
+        # Set up custom result handling
+        self.result_timer = QTimer()
+        self.result_timer.timeout.connect(self.check_results)
+        self.result_timer.start(100)  # Check every 100ms
+        self.pending_result = None
+
+    def check_results(self):
+        if self.pending_result is not None:
+            self.OnResult(self.pending_result)
+            self.pending_result = None
 
     def OnResult(self, event):
         if self.progressDialog:
-            self.progressDialog.EndModal(wx.ID_CANCEL)
-            self.progressDialog.Destroy()
+            self.progressDialog.close()
+            self.progressDialog = None
 
-        data = event.data
+        data = event.data if hasattr(event, 'data') else event
         if data:
-            self.statusbar.SetStatusText("Read %d logs" % len(data))
+            self.statusbar.showMessage(f"Read {len(data)} logs")
             self.data = data
             self.data_view = self.data
             self.SetupGrid()
 
-    def Open(self, e):
-        openFileDialog = wx.FileDialog(
+    def Open(self):
+        file_dialog = QFileDialog()
+        file_paths, _ = file_dialog.getOpenFileNames(
             self,
             "Open Log file",
             "",
-            "",
-            "log files (*.mi2log) |*.mi2log| All files |*.*",
-            wx.FD_OPEN | wx.FD_FILE_MUST_EXIST | wx.FD_MULTIPLE)
-        if (openFileDialog.ShowModal() == wx.ID_OK):
-            # print 'Selected %s' %openFileDialog.GetPath()
-            print(('Selected %s' % openFileDialog.Paths))
+            "log files (*.mi2log);;All files (*.*)")
+        
+        if file_paths:
+            print(f'Selected {file_paths}')
             try:
-                self.grid.ClearGrid()
+                self.grid.clearContents()
+                self.grid.setRowCount(0)
 
-                # thread.start_new_thread(openFile,(openFileDialog.GetPath(),))
-                # t = Thread(target = self.openFile, args=(openFileDialog.GetPath(),self.selectedTypes))
-                t = Thread(
-                    target=self.openFile,
-                    args=(
-                        openFileDialog.Paths,
-                        self.selectedTypes))
+                t = Thread(target=self.openFile, args=(file_paths, self.selectedTypes))
                 self.progressDialog = ProgressDialog(self)
                 t.start()
-                self.progressDialog.ShowModal()
+                self.progressDialog.exec()
 
-                if len(openFileDialog.Paths) == 1:
-                    self.SetTitle(openFileDialog.GetPath())
+                if len(file_paths) == 1:
+                    self.setWindowTitle(file_paths[0])
                 else:
-                    self.SetTitle(
-                        "Multiple files in " +
-                        openFileDialog.Directory)
+                    self.setWindowTitle(f"Multiple files in {os.path.dirname(file_paths[0])}")
 
-            except e:
-                print(("Error while opening file.", e))
-            # if (random() > 0.5):
-            #    self.SetupGrid(self.data1)
-            # else:
-            #    self.SetupGrid(self.data2)
+            except Exception as e:
+                print(f"Error while opening file: {e}")
 
-    def OnFilter(self, e):
+    def OnFilter(self):
         types = list(self._log_analyzer.supported_types)
         checkboxDialog = MyMCD(self, "Filter", "", types)
-        if (checkboxDialog.ShowModal() == wx.ID_OK):
-            self.selectedTypes = [types[x]
-                                  for x in checkboxDialog.GetSelections()]
+        if checkboxDialog.exec() == QDialog.DialogCode.Accepted:
+            selections = checkboxDialog.GetSelections()
+            self.selectedTypes = [types[x] for x in selections]
             if self.data:
-                self.data_view = [
-                    x for x in self.data if x["TypeID"] in self.selectedTypes]
+                self.data_view = [x for x in self.data if x["TypeID"] in self.selectedTypes]
                 self.SetupGrid()
 
-    def OnTime(self, e):
+    def OnTime(self):
         timewindowDialog = TimeWindowDialog(self, self.min_time, self.max_time)
-        if (timewindowDialog.ShowModal() == wx.ID_OK):
+        if timewindowDialog.exec() == QDialog.DialogCode.Accepted:
             select_start = timewindowDialog.cur_start
             select_end = timewindowDialog.cur_end
             self.data_view = [
@@ -338,28 +400,21 @@ class WindowClass(wx.Frame):
                     '%Y-%m-%d  %H:%M:%S.%f') <= select_end]
             self.SetupGrid()
 
-    def OnReset(self, e):
+    def OnReset(self):
         if self.data:
             self.data_view = self.data
             self.SetupGrid()
 
-    # def openFile(self, filePath,selectedTypes):
-    #     self._log_analyzer.AnalyzeFile(filePath,selectedTypes)
-
     def openFile(self, Paths, selectedTypes):
         self._log_analyzer.AnalyzeFile(Paths, selectedTypes)
 
-    def OnSearch(self, e):
-        search_dlg = wx.TextEntryDialog(
-            self, "Search for", "", "", style=wx.OK | wx.CANCEL)
-        if (search_dlg.ShowModal() == wx.ID_OK):
-            keyword = search_dlg.GetValue()
-            self.data_view = [
-                x for x in self.data_view if keyword in x["Payload"]]
+    def OnSearch(self):
+        text, ok = QInputDialog.getText(self, "Search", "Search for:")
+        if ok and text:
+            self.data_view = [x for x in self.data_view if text in x["Payload"]]
             self.SetupGrid()
-        search_dlg.Destroy()
 
-    def OnAbout(self, e):
+    def OnAbout(self):
         about_text = (
                 'MobileInsight GUI\n\n\n' +
                 'Copyright (c) 2014-2016 MobileInsight Team\n\n' +
@@ -367,25 +422,12 @@ class WindowClass(wx.Frame):
                 '    Priyanka Avinash Kachare,\n' +
                 '    Michael Ivan,\n' +
                 '    Yuanjie Li')
-        search_dlg = wx.MessageDialog(
-            self, about_text, "About MobileInsight GUI", wx.OK)
-        search_dlg.ShowModal()
+        QMessageBox.information(self, "About MobileInsight GUI", about_text)
 
-    def OnGridSelect(self, e):
-        # self.statusbar.SetStatusText("Selected %d" %e.GetRow())
-        row = e.GetRow()
-        if (row < len(self.data_view)):
-            self.status_text.SetLabel(
-                "Time Stamp : %s    Type : %s" %
-                (str(
-                    self.data_view[row]["Timestamp"]), str(
-                    self.data_view[row]["TypeID"])))
-            #self.details_text.SetValue(str(self.data_view[row]["Payload"]))
-            
-            #val = xml.dom.minidom.parseString(
-             #   str(self.data_view[row]["Payload"]))
-            #pretty_xml_as_string = val.toprettyxml(indent="  ", newl="\n", encoding="utf8")  # maybe will trigger bug
-            #self.details_text.SetValue(pretty_xml_as_string)
+    def OnGridSelect(self, row, column):
+        if row < len(self.data_view):
+            self.status_text.setText(
+                f"Time Stamp : {self.data_view[row]['Timestamp']}    Type : {self.data_view[row]['TypeID']}")
             
             self.content = {}
             r = ET.fromstring(str(self.data_view[row]["Payload"]))
@@ -400,17 +442,16 @@ class WindowClass(wx.Frame):
                 elif child.get("type") == "list" and child[0].tag == "msg":  # xml from wireshark
                     list_content = self.parse_msg(child)
                     self.content[k] = list_content
-                    # print(str(list_content))
                 elif child.get("type")=="dict":
                     self.content[k]=self.parse_dict(child)
                 else:
                     self.content[k] = child.text
-            self.details_text.DeleteAllItems()
-            root = self.details_text.AddRoot('payload')
-            self.creat_tree(self.content,root)
-            self.details_text.ExpandAll()
-            
-        e.Skip()
+                    
+            self.details_text.clear()
+            root = QTreeWidgetItem(self.details_text)
+            root.setText(0, 'payload')
+            self.create_tree(self.content, root)
+            self.details_text.expandAll()
 
     def parse_list(self, listroot, attrib_key):
         '''
@@ -506,39 +547,43 @@ class WindowClass(wx.Frame):
                     msg_dict[k] = v
         return msg_dict
 
-    def creat_tree(self,payload_dict,root):
-        for k,v in payload_dict.items():
-            if(isinstance(v,dict)):
-                subroot=self.details_text.AppendItem(root,str(k))
-                self.creat_tree(v,subroot)
+    def create_tree(self, payload_dict, root):
+        for k, v in payload_dict.items():
+            if isinstance(v, dict):
+                subroot = QTreeWidgetItem(root)
+                subroot.setText(0, str(k))
+                self.create_tree(v, subroot)
             else:
-                if(v!="skip"):
-                    self. details_text.AppendItem(root,str(k)+":"+str(v))
+                if v != "skip":
+                    item = QTreeWidgetItem(root)
+                    item.setText(0, f"{k}:{v}")
                 else:
-                    self.details_text.AppendItem(root,str(k))
-                    
+                    item = QTreeWidgetItem(root)
+                    item.setText(0, str(k))
 
-    def Quit(self, e):
-        self.Destroy()
+    def closeEvent(self, a0):
+        if a0:
+            a0.accept()
 
     def OnReadComplete(self):
-        evt = ResultEvent(self._log_analyzer.msg_logs)
-        wx.PostEvent(wx.GetApp().frame, evt)
+        # Instead of using wx events, we'll use a simple variable
+        self.pending_result = ResultEvent(self._log_analyzer.msg_logs)
 
     def SetupGrid(self):
         self.min_time = datetime.strptime("3000 Jan 1", '%Y %b %d')
         self.max_time = datetime.strptime("1900 Jan 1", '%Y %b %d')
 
         n = len(self.data_view)
-        # self.grid.CreateGrid(max(25, n), 2)
-        if n > self.grid.GetNumberRows():
-            self.grid.InsertRows(0, n - self.grid.GetNumberRows())
-        else:
-            self.grid.DeleteRows(0, self.grid.GetNumberRows() - n)
-
-        self.grid.ClearGrid()
-        self.grid.SetColLabelValue(0, "Timestamp")
-        self.grid.SetColLabelValue(1, "Type ID")
+        
+        # Set the number of rows
+        self.grid.setRowCount(n)
+        
+        # Clear existing content
+        self.grid.clearContents()
+        
+        # Set headers
+        self.grid.setHorizontalHeaderLabels(["Timestamp", "Type ID"])
+        
         for i in range(n):
             try:
                 cur_time = datetime.strptime(
@@ -549,18 +594,21 @@ class WindowClass(wx.Frame):
                     self.data_view[i]["Timestamp"], '%Y-%m-%d  %H:%M:%S')
             self.min_time = min(self.min_time, cur_time)
             self.max_time = max(self.max_time, cur_time)
-            self.grid.SetCellValue(i, 0, str(self.data_view[i]["Timestamp"]))
-            self.grid.SetCellValue(i, 1, str(self.data_view[i]["TypeID"]))
-            self.grid.SetReadOnly(i, 0)
-            self.grid.SetReadOnly(i, 1)
-        # self.grid.Bind(wx.grid.EVT_GRID_CELL_LEFT_CLICK, self.onRowClick)
+            
+            # Set cell values
+            timestamp_item = QTableWidgetItem(str(self.data_view[i]["Timestamp"]))
+            timestamp_item.setFlags(timestamp_item.flags() & ~Qt.ItemFlag.ItemIsEditable)
+            self.grid.setItem(i, 0, timestamp_item)
+            
+            typeid_item = QTableWidgetItem(str(self.data_view[i]["TypeID"]))
+            typeid_item.setFlags(typeid_item.flags() & ~Qt.ItemFlag.ItemIsEditable)
+            self.grid.setItem(i, 1, typeid_item)
 
 
 def main():
-    wx.Log.SetLogLevel(0)
-    app = wx.App()
-    app.frame = WindowClass(None)
-    app.MainLoop()
+    app = QApplication(sys.argv)
+    window = WindowClass()
+    sys.exit(app.exec())
 
 
 main()
