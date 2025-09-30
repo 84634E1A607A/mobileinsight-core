@@ -111,7 +111,8 @@ class WSDissector:
             if platform.system() == "Windows":
                 real_executable_path = sys.exec_prefix + "/mobile_insight/ws_dissector/ws_dissector.exe"
             else:   # Linux or macOS
-                real_executable_path = "/usr/local/bin/ws_dissector"
+                # real_executable_path = "/usr/local/bin/ws_dissector"
+                real_executable_path = "/home/ajax/source/mobileinsight/mi/mobileinsight-core/ws_dissector/ws_dissector"
 
         env = dict(os.environ)
         if platform.system() == "Windows":

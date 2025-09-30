@@ -161,6 +161,7 @@ gui/icons/about.png
 gui/icons/filter.png
 gui/icons/graph.png
 gui/icons/loading.gif
+gui/icons/mobileinsight.png
 gui/icons/open.png
 gui/icons/progress.gif
 gui/icons/reset.png
@@ -231,6 +232,7 @@ mobile_insight/monitor/online_monitor.py
 mobile_insight/monitor/utils_android.py
 mobile_insight/monitor/dm_collector/__init__.py
 mobile_insight/monitor/dm_collector/dm_collector.py
+mobile_insight/monitor/dm_collector/dm_collector_c.cpython-313-x86_64-linux-gnu.so
 mobile_insight/monitor/dm_collector/dm_collector_c.so
 mobile_insight/monitor/dm_collector/dm_endec/__init__.py
 mobile_insight/monitor/dm_collector/dm_endec/dm_log_packet.py
