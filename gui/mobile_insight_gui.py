@@ -41,6 +41,8 @@ from PyQt6.QtGui import QAction, QIcon, QPixmap, QFont, QMovie, QCloseEvent
 # Try to import WebEngine, fall back to TextEdit if not available
 try:
     from PyQt6.QtWebEngineWidgets import QWebEngineView
+    from PyQt6.QtWebEngineCore import QWebEngineProfile, QWebEngineSettings
+    from PyQt6.QtNetwork import QNetworkProxy
     WEB_ENGINE_AVAILABLE = True
 except ImportError:
     WEB_ENGINE_AVAILABLE = False
@@ -52,6 +54,100 @@ from mobile_insight.monitor.dm_collector.dm_endec.dm_log_packet import DMLogPack
 # Get the directory containing this script for relative resource paths
 GUI_DIR = Path(__file__).parent
 ICONS_DIR = GUI_DIR / "icons"
+
+
+def configure_webengine_proxy():
+    """
+    Configure Qt6WebEngine to use system proxy or a specific proxy server.
+    Attempts to use system proxy first, falls back to specific proxy if configured.
+    """
+    if not WEB_ENGINE_AVAILABLE:
+        return
+    
+    try:
+        # Try to detect and use system proxy settings first
+        try:
+            # Check for system proxy environment variables
+            http_proxy = os.environ.get('http_proxy') or os.environ.get('HTTP_PROXY')
+            https_proxy = os.environ.get('https_proxy') or os.environ.get('HTTPS_PROXY')
+            
+            if http_proxy or https_proxy:
+                print(f"Using system proxy settings: HTTP={http_proxy}, HTTPS={https_proxy}")
+                # Qt WebEngine should automatically use system proxy when available
+                return
+        except Exception as e:
+            print(f"Could not detect system proxy: {e}")
+        
+        # Fallback to specific proxy configuration
+        proxy_host = "172.30.12.5"
+        proxy_port = 7890
+        
+        print(f"Configuring WebEngine to use proxy: http://{proxy_host}:{proxy_port}")
+        
+        # Method 1: Set environment variables (most reliable for WebEngine)
+        os.environ['http_proxy'] = f'http://{proxy_host}:{proxy_port}'
+        os.environ['https_proxy'] = f'http://{proxy_host}:{proxy_port}'
+        os.environ['HTTP_PROXY'] = f'http://{proxy_host}:{proxy_port}'
+        os.environ['HTTPS_PROXY'] = f'http://{proxy_host}:{proxy_port}'
+        print(f"Set proxy environment variables")
+        
+        # Method 2: Configure Qt application proxy (affects all Qt network operations)
+        try:
+            from PyQt6.QtNetwork import QNetworkProxy, QNetworkProxyFactory
+            
+            # Set application-wide proxy
+            proxy = QNetworkProxy()
+            proxy.setType(QNetworkProxy.ProxyType.HttpProxy)
+            proxy.setHostName(proxy_host)
+            proxy.setPort(proxy_port)
+            QNetworkProxy.setApplicationProxy(proxy)
+            print(f"Set Qt application proxy to {proxy_host}:{proxy_port}")
+            
+        except Exception as e:
+            print(f"Could not set Qt application proxy: {e}")
+        
+        # Method 3: Try to configure WebEngine profile proxy
+        try:
+            from PyQt6.QtWebEngineCore import QWebEngineProfile
+            
+            # Get the default profile and configure it
+            profile = QWebEngineProfile.defaultProfile()
+            
+            # Note: QWebEngineProfile in Qt6 doesn't have direct proxy settings
+            # but it should respect the application proxy and environment variables
+            
+            print("Configured WebEngine profile settings")
+            
+        except Exception as e:
+            print(f"Could not configure WebEngine profile: {e}")
+        
+    except Exception as e:
+        print(f"Error configuring WebEngine proxy: {e}")
+
+
+def setup_webengine_view_with_proxy(web_view):
+    """
+    Configure a specific QWebEngineView instance with proxy-friendly settings.
+    """
+    if not WEB_ENGINE_AVAILABLE or web_view is None:
+        return
+    
+    try:
+        # Configure WebEngine settings for better proxy compatibility
+        from PyQt6.QtWebEngineCore import QWebEngineSettings
+        
+        settings = web_view.settings()
+        if settings:
+            settings.setAttribute(QWebEngineSettings.WebAttribute.LocalContentCanAccessRemoteUrls, True)
+            settings.setAttribute(QWebEngineSettings.WebAttribute.LocalContentCanAccessFileUrls, True)
+            settings.setAttribute(QWebEngineSettings.WebAttribute.JavascriptEnabled, True)
+            settings.setAttribute(QWebEngineSettings.WebAttribute.LocalStorageEnabled, True)
+            settings.setAttribute(QWebEngineSettings.WebAttribute.AllowRunningInsecureContent, True)
+            
+        print("WebEngine view configured with proxy-friendly settings")
+        
+    except Exception as e:
+        print(f"Warning: Could not configure WebEngine view settings: {e}")
 
 
 class ResultEvent:
@@ -254,16 +350,7 @@ class SatelliteIdentificationDialog(QDialog):
             self.map_view.setMinimumHeight(400)
             
             # Configure WebEngine settings for better compatibility
-            try:
-                settings = self.map_view.settings()
-                if settings:
-                    settings.setAttribute(QWebEngineSettings.WebAttribute.LocalContentCanAccessRemoteUrls, True)
-                    settings.setAttribute(QWebEngineSettings.WebAttribute.LocalContentCanAccessFileUrls, True)
-                    settings.setAttribute(QWebEngineSettings.WebAttribute.JavascriptEnabled, True)
-                    settings.setAttribute(QWebEngineSettings.WebAttribute.LocalStorageEnabled, True)
-                    settings.setAttribute(QWebEngineSettings.WebAttribute.AllowRunningInsecureContent, True)
-            except Exception as e:
-                print(f"Warning: Could not configure WebEngine settings: {e}")
+            setup_webengine_view_with_proxy(self.map_view)
             
             map_layout.addWidget(self.map_view)
             self.is_web_engine = True
@@ -517,6 +604,18 @@ Satellites:
         </html>
         """
         
+#         html_content = """
+# <html>
+#     <head></head>
+#     <body>
+#         <script>
+#             location.href = "https://ip.aajax.top";
+#         </script>
+#         Test
+#     </body>
+# </html>    
+#         """
+        
         if self.is_web_engine:
             from typing import cast
             # Type cast to QWebEngineView when WebEngine is available
@@ -589,16 +688,7 @@ class SatelliteOrbitServiceDialog(QDialog):
             self.orbital_view.setMinimumHeight(400)
             
             # Configure WebEngine settings for better compatibility
-            try:
-                settings = self.orbital_view.settings()
-                if settings:
-                    settings.setAttribute(QWebEngineSettings.WebAttribute.LocalContentCanAccessRemoteUrls, True)
-                    settings.setAttribute(QWebEngineSettings.WebAttribute.LocalContentCanAccessFileUrls, True)
-                    settings.setAttribute(QWebEngineSettings.WebAttribute.JavascriptEnabled, True)
-                    settings.setAttribute(QWebEngineSettings.WebAttribute.LocalStorageEnabled, True)
-                    settings.setAttribute(QWebEngineSettings.WebAttribute.AllowRunningInsecureContent, True)
-            except Exception as e:
-                print(f"Warning: Could not configure orbital WebEngine settings: {e}")
+            setup_webengine_view_with_proxy(self.orbital_view)
             
             map_layout.addWidget(self.orbital_view)
             self.is_orbital_web_engine = True
@@ -1601,7 +1691,57 @@ class WindowClass(QMainWindow):
 
 
 def main() -> None:
+    # Configure proxy environment variables BEFORE creating QApplication
+    # This is crucial for Qt WebEngine proxy support
+    proxy_host = "172.30.12.5"
+    proxy_port = 7890
+    
+    # Check for existing system proxy first
+    http_proxy = os.environ.get('http_proxy') or os.environ.get('HTTP_PROXY')
+    https_proxy = os.environ.get('https_proxy') or os.environ.get('HTTPS_PROXY')
+    
+    if not (http_proxy or https_proxy):
+        # Set proxy environment variables before QApplication creation
+        os.environ['http_proxy'] = f'http://{proxy_host}:{proxy_port}'
+        os.environ['https_proxy'] = f'http://{proxy_host}:{proxy_port}'
+        os.environ['HTTP_PROXY'] = f'http://{proxy_host}:{proxy_port}'
+        os.environ['HTTPS_PROXY'] = f'http://{proxy_host}:{proxy_port}'
+        print(f"Pre-configured proxy environment: http://{proxy_host}:{proxy_port}")
+    else:
+        print(f"Using existing system proxy: HTTP={http_proxy}, HTTPS={https_proxy}")
+    
+    # Set Qt WebEngine command line arguments for proxy support
+    if WEB_ENGINE_AVAILABLE:
+        try:
+            # Import QtWebEngine early to initialize it properly
+            from PyQt6.QtWebEngineCore import QWebEngineSettings
+            from PyQt6 import QtWebEngineQuick
+            
+            # Set up chromium command line arguments for proxy
+            os.environ['QTWEBENGINE_CHROMIUM_FLAGS'] = f'--proxy-server=http://{proxy_host}:{proxy_port} --proxy-bypass-list=<-loopback>'
+            print(f"Set QtWebEngine Chromium proxy flags: --proxy-server=http://{proxy_host}:{proxy_port}")
+            
+        except ImportError:
+            print("QtWebEngine not available for command line proxy configuration")
+    
+    # Add Qt WebEngine proxy command line arguments to sys.argv
+    original_argv = sys.argv.copy()
+    if not any('--proxy-server' in arg for arg in sys.argv):
+        if not (http_proxy or https_proxy):
+            sys.argv.extend([
+                f'--proxy-server=http://{proxy_host}:{proxy_port}',
+                '--proxy-bypass-list=<-loopback>'
+            ])
+            print("Added Qt WebEngine proxy command line arguments")
+    
     app = QApplication(sys.argv)
+    
+    # Restore original argv after QApplication creation
+    sys.argv = original_argv
+    
+    # Configure WebEngine proxy settings after creating QApplication
+    configure_webengine_proxy()
+    
     # Set application/dialog icon from the icons directory if available
     try:
         icon_path = ICONS_DIR / "mobileinsight.png"
