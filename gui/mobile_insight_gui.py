@@ -1073,32 +1073,32 @@ class RealTimeDataVisualizationDialog(QDialog):
         
         layout.addLayout(controls_layout)
         
-        # Matplotlib figures
-        # Doppler frequency shift plot
-        self.doppler_figure = Figure(figsize=(7, 4), dpi=100)
-        self.doppler_canvas = FigureCanvas(self.doppler_figure)
-        self.doppler_axes = self.doppler_figure.add_subplot(111)
+        # Matplotlib figure with two subplots
+        self.figure = Figure(figsize=(10, 8), dpi=100)
+        self.canvas = FigureCanvas(self.figure)
+        
+        # Create two subplots sharing the x-axis
+        self.doppler_axes = self.figure.add_subplot(211)
+        self.distance_axes = self.figure.add_subplot(212, sharex=self.doppler_axes)
+        
+        # Doppler frequency shift plot (upper)
         self.doppler_axes.set_title('Doppler Frequency Shift vs Time')
-        self.doppler_axes.set_xlabel('Time (s)')
         self.doppler_axes.set_ylabel('Frequency Shift (kHz)')
         self.doppler_axes.grid(True)
-        self.doppler_axes.legend(['Measured', 'Predicted (TLE)'])
-        self.doppler_figure.tight_layout()
+        self.doppler_axes.legend(['Measurement', 'Prediction (TLE)'])
+        self.doppler_axes.tick_params(labelbottom=False)  # Hide x-axis labels
         
-        # Distance plot
-        self.distance_figure = Figure(figsize=(10, 4), dpi=100)
-        self.distance_canvas = FigureCanvas(self.distance_figure)
-        self.distance_axes = self.distance_figure.add_subplot(111)
+        # Distance plot (lower)
         self.distance_axes.set_title('Distance vs Time')
         self.distance_axes.set_xlabel('Time (s)')
         self.distance_axes.set_ylabel('Distance (km)')
         self.distance_axes.grid(True)
-        self.distance_axes.legend(['Measured', 'Predicted (TLE)'])
-        self.distance_figure.tight_layout()
+        self.distance_axes.legend(['Measurement', 'Prediction (TLE)'])
         
-        # Add canvases to layout (1:1 ratio)
-        layout.addWidget(self.doppler_canvas, 1)
-        layout.addWidget(self.distance_canvas, 1)
+        self.figure.tight_layout()
+        
+        # Add canvas to layout
+        layout.addWidget(self.canvas, 1)
         
         self.setLayout(layout)
         
@@ -1167,7 +1167,8 @@ class RealTimeDataVisualizationDialog(QDialog):
             # "index": list(map(int, doppler_data[0].split(','))),
             "timestamp": doppler_data[0].split(','),
             "measured": list(map(float, doppler_data[1].split(','))),
-            "predicted": list(map(float, doppler_data[2].split(',')))
+            "predicted": list(map(float, doppler_data[2].split(','))),
+            "compensated": list(map(float, doppler_data[3].split(',')))
         }
         
         distance_data = ta_csv.strip().split('\n')
@@ -1175,7 +1176,8 @@ class RealTimeDataVisualizationDialog(QDialog):
             "index": list(map(int, distance_data[0].split(','))),
             "timestamp": distance_data[1].split(','),
             "measured": list(map(float, distance_data[2].split(','))),
-            "predicted": list(map(float, distance_data[3].split(',')))
+            "predicted": list(map(float, distance_data[3].split(','))),
+            "compensated": list(map(float, distance_data[4].split(',')))
         }
 
         # Convert timestamps to relative seconds
@@ -1188,17 +1190,21 @@ class RealTimeDataVisualizationDialog(QDialog):
         self.time_data_dis = distance_times
         self.doppler_measured = doppler_data["measured"]
         self.doppler_predicted = doppler_data["predicted"]
+        self.doppler_compensated = doppler_data["compensated"]
         self.distance_measured = distance_data["measured"]
         self.distance_predicted = distance_data["predicted"]
-        
+        self.distance_compensated = distance_data["compensated"]
+
         # Filter first 12 seconds
         filter_time = 12
         self.time_data_dop = [t for t in self.time_data_dop if t <= filter_time]
         self.doppler_measured = self.doppler_measured[:len(self.time_data_dop)]
         self.doppler_predicted = self.doppler_predicted[:len(self.time_data_dop)]
+        self.doppler_compensated = self.doppler_compensated[:len(self.time_data_dop)]
         self.time_data_dis = [t for t in self.time_data_dis if t <= filter_time]
         self.distance_measured = self.distance_measured[:len(self.time_data_dis)]
         self.distance_predicted = self.distance_predicted[:len(self.time_data_dis)]
+        self.distance_compensated = self.distance_compensated[:len(self.time_data_dis)]
 
         # Update plots
         self.update_plots()
@@ -1212,22 +1218,26 @@ class RealTimeDataVisualizationDialog(QDialog):
         self.doppler_axes.clear()
         self.distance_axes.clear()
         
-        # Doppler plot
+        # Doppler plot (upper)
         self.doppler_axes.scatter(self.time_data_dop, self.doppler_measured, 
-                                 c='red', s=20, alpha=0.7, label='Measured')
+                                 c='red', s=20, alpha=0.7, label='Measurement')
         self.doppler_axes.plot(self.time_data_dop, self.doppler_predicted, 
-                              'b-', linewidth=2, label='Predicted (TLE)')
+                              'g-', linewidth=2, label='Prediction (TLE)')
+        self.doppler_axes.plot(self.time_data_dop, self.doppler_compensated,
+                                'b-', linewidth=2, label='After compensation')
         # self.doppler_axes.set_title('Doppler Frequency Shift vs Time')
-        self.doppler_axes.set_xlabel('Time (s)')
         self.doppler_axes.set_ylabel('Doppler shift (kHz)')
         self.doppler_axes.grid(True)
         self.doppler_axes.legend()
+        self.doppler_axes.tick_params(labelbottom=False)  # Hide x-axis labels
         
-        # Distance plot
+        # Distance plot (lower)
         self.distance_axes.scatter(self.time_data_dis, self.distance_measured, 
-                                  c='red', s=20, alpha=0.7, label='Measured')
+                                  c='red', s=20, alpha=0.7, label='Measurement')
         self.distance_axes.plot(self.time_data_dis, self.distance_predicted, 
-                               'b-', linewidth=2, label='Predicted (TLE)')
+                               'g-', linewidth=2, label='Prediction (TLE)')
+        self.distance_axes.plot(self.time_data_dis, self.distance_compensated,
+                                 'b-', linewidth=2, label='After compensation')
         # self.distance_axes.set_title('Distance vs Time')
         self.distance_axes.set_xlabel('Time (s)')
         self.distance_axes.set_ylabel('Distance (km)')
@@ -1235,12 +1245,10 @@ class RealTimeDataVisualizationDialog(QDialog):
         self.distance_axes.legend()
         
         # Apply tight_layout to prevent label clipping
-        self.doppler_figure.tight_layout()
-        self.distance_figure.tight_layout()
+        self.figure.tight_layout()
         
-        # Refresh canvases
-        self.doppler_canvas.draw()
-        self.distance_canvas.draw()
+        # Refresh canvas
+        self.canvas.draw()
     
     def start_simulation(self) -> None:
         """Start the real-time data simulation."""
@@ -1269,23 +1277,23 @@ class RealTimeDataVisualizationDialog(QDialog):
         self.distance_axes.clear()
         
         # Reset plot formatting
+        # Doppler (upper)
         self.doppler_axes.set_title('Doppler Frequency Shift vs Time')
-        self.doppler_axes.set_xlabel('Time (s)')
         self.doppler_axes.set_ylabel('Frequency Shift (kHz)')
         self.doppler_axes.grid(True)
+        self.doppler_axes.tick_params(labelbottom=False)  # Hide x-axis labels
         
+        # Distance (lower)
         self.distance_axes.set_title('Distance vs Time')
         self.distance_axes.set_xlabel('Time (s)')
         self.distance_axes.set_ylabel('Distance (km)')
         self.distance_axes.grid(True)
         
         # Apply tight_layout to prevent label clipping
-        self.doppler_figure.tight_layout()
-        self.distance_figure.tight_layout()
+        self.figure.tight_layout()
         
-        # Refresh canvases
-        self.doppler_canvas.draw()
-        self.distance_canvas.draw()
+        # Refresh canvas
+        self.canvas.draw()
 
 
 class WindowClass(QMainWindow):
